@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+   <head>
+      <title>[BitYacht] 提幣電子信箱驗證碼</title>
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+     <meta name="viewport" content="width=680, user-scalable=yes">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <!--[if !mso]><!-->
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!--<![endif]--><!--[if gte mso 9]>
+      <xml>
+         <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+         </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+   </head>
+  <body bgcolor="#eeeeee">
+    <table align="center" width="800" bgcolor="#16253C">
+      <tr>
+        <td height="30"></td>
+      </tr>
+      <tr>
+        <td>
+          <table align="center" width="90%">
+            <tr>
+              <td align="center">
+                <img src="{{.Logo}}" width="300px">
+              </td>
+            </tr>
+            <tr>
+              <td height="30"></td>
+            </tr>
+            <tr>
+              <td style="font-family: Noto Sans;color: #FFFFFF;font-size: 18px;line-height: 1.8;">
+                <p align="center" style="font-size: 30px;font-weight: 700;letter-spacing: 2px;">BitYacht 會員提幣驗證</p>
+                <p>親愛的用戶 你好：<br>
+                歡迎加入 BitYacht 交易所！ 此驗證碼將作為BitYacht『提幣』使用。
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table align="center" width="80%">
+            <tr>
+              <td style="font-family: Noto Sans;color: #FF5912;background-color: #EEEEEE;border-radius: 10px;">
+                <p align="center" style="font-size: 44px;font-weight: 700;letter-spacing: 6px;">
+                  <span style="font-size: 20px;font-weight: 500;letter-spacing: 1px;">請於網頁上輸入以下驗證碼，以完成驗證</span><br>
+                    {{.Payload.Code}}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table align="center" width="90%">
+            <tr>
+              <td style="font-family: Noto Sans;color: #FFFFFF;font-size: 16px;line-height: 1.8;">
+                <p>
+                  <li>此驗證碼將在 {{.Payload.CodeLifeTime}} 分鐘後過期，請在此之前使用。否則，你將需要再次進行提幣申請。</li>
+                  <li>請不要將驗證碼告知他人。</li>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- footer -->
+      <tr>
+        <td>
+          <table align="center" width="90%">
+            <tr>
+              <td style="font-family: Noto Sans;color: #FFFFFF;font-size: 14px;line-height: 1.8;border-top: 1px #515899 solid;">
+                <p>注意</p>
+                如果此次操作不是你本人，請立即聯繫客服 Line : <a href="https://lin.ee/WV9O4yx" style="color:#DDDDDD">@023ccabq</a><br>
+                <p align="center" style="color:#CCCCCC">此信件為系統自動發送，請勿直接回覆</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- footer end -->
+      <tr>
+        <td height="30"></td>
+      </tr>
+    </table>
+  </body>
+</html>

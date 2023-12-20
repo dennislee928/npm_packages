@@ -1,0 +1,110 @@
+server:
+  host:
+  port: 80
+  readTimeout: 60s
+  writeTimeout: 60s
+  certFile:
+  keyFile:
+  storagePath: ./
+
+jwt:
+  key: bityacht-exchange-api-server
+  accessTokenLifetime: 60m
+  refreshTokenLifetime: 180m
+
+database:
+  sql:
+    host: localhost
+    port: 3306
+    name: bityacht_exchange
+    user: user
+    password: password
+    logLevel: 1 # Silent: 1, Error: 2, Warn: 3, Info: 4
+
+cache:
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+    username:
+    password:
+    maxConnections: 10
+    readTimeout: 3s
+    writeTimeout: 3s
+
+log:
+  level: 1 # TraceLevel: -1, DebugLevel: 0, InfoLevel: 1, WarnLevel: 2, ErrorLevel: 3, FatalLevel: 4, PanicLevel: 5, NoLevel: 6, Disabled: 7
+  filename:
+  maxSize: 10
+  maxBackups: 10
+  maxAge: 30
+  compress: true
+
+email:
+  enable: false
+  nickname: example
+  account: example@skycloud.com.tw
+  password: example12345678
+  host: smtp.gmail.com
+  port: 587 # Gmail: 456 for SSL, 587 for TLS. Mailtrap: only TLS.
+  ssl: true
+  tls: true # if tls enable -> ssl will be disable.
+  bitYachtfrontendURL: https://bityacht.io
+
+sms:
+  enable: false
+  provider: mitake
+  host: https://smsapi.mitake.com.tw/api/mtk
+  username: username
+  password: password
+  connCount: 15
+
+exchange:
+  updateTrendInterval: 5s
+  binance:
+    debug: false
+    apikey: apikey
+    secretKey: secretKey
+    useTestnet: false
+    testnetApikey: testnetApikey
+    testnetSecretKey: testnetSecretKey
+
+receipt:
+  app:
+    code: appCode
+    key: appKey
+  api:
+    mode: 0 # 0: Test, 1: Production
+    account: appAcc
+    password: apiPwd
+
+kyc:
+  apiToken: apiToken
+  callbackHost:
+  successURL:
+  errorURL:
+  ddTaskSearchSettingID: 709
+
+wallet:
+  apiMode: 0 # 0: Test, 1: Production
+  wallets:
+    - currency: BTC
+      mainnet: BTC
+      flow: 3 # 1: Deposit, 2: Withdraw, 3: Both
+      id:
+      token:
+      secret:
+      refreshToken:
+      orderIDPrefix: '999999_' # NOTE: under score need to be use "" to wrap.
+    - currency: ETH
+      flow: 1
+      id:
+      token:
+      secret:
+      refreshToken:
+    - currency: ETH
+      flow: 2
+      id:
+      token:
+      secret:
+      refreshToken:

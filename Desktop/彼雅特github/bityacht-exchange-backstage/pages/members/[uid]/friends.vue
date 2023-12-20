@@ -1,0 +1,4 @@
+<template>
+  <UserInviteInfo />
+  <UserInviteRewards />
+</template>

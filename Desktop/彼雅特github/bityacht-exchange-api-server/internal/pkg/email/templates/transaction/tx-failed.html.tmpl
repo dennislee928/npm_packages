@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+   <head>
+      <title>[BitYacht] 交易失敗通知信</title>
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+     <meta name="viewport" content="width=680, user-scalable=yes">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <!--[if !mso]><!-->
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!--<![endif]--><!--[if gte mso 9]>
+      <xml>
+         <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+         </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+   </head>
+  <body bgcolor="#eeeeee">
+    <table align="center" width="800" bgcolor="#16253C">
+      <tr>
+        <td height="30"></td>
+      </tr>
+      <tr>
+        <td>
+          <table align="center" width="90%">
+            <tr>
+              <td align="center">
+                <img src="{{.Logo}}" width="300px">
+              </td>
+            </tr>
+            <tr>
+              <td height="30"></td>
+            </tr>
+            <tr>
+              <td style="font-family: Noto Sans;color: #FFFFFF;font-size: 18px;line-height: 1.8;">
+                <p align="center" style="font-size: 30px;font-weight: 700;letter-spacing: 2px;">交易失敗通知</p>
+                <p>親愛的用戶 你好：<br>
+                你有一筆訂單交易已失敗。
+                <p>資訊如下：</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table align="center" width="80%">
+            <tr>
+              <td style="font-family: Noto Sans;color: #111111;background-color: #EEEEEE;border-radius: 10px;">
+                <p style="font-size: 16px;">
+                  <ul style="line-height: 1.8;">
+                    <li>訂單編號：{{.Payload.TransactionsID}}</li>
+                    <li>交易對：{{.Payload.BaseSymbol}}/{{.Payload.QuoteSymbol}}</li>
+                    <li>方向：{{.Payload.Side}}</li>
+                    <li>數額：{{.Payload.Quantity}} {{.Payload.BaseSymbol}}</li>
+                  </ul>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <!-- footer -->
+      <tr>
+        <td>
+          <table align="center" width="90%">
+            <tr>
+              <td style="font-family: Noto Sans;color: #FFFFFF;font-size: 14px;line-height: 1.8;border-top: 1px #515899 solid;">
+                <p>注意</p>
+                若此次操作不是你本人，建議立即修改密碼。 若是本人操作，請忽略此訊息。<br>
+                如果此次操作不是你本人，請立即聯繫客服 Line : <a href="https://lin.ee/WV9O4yx" style="color:#DDDDDD">@023ccabq</a><br>
+                <p align="center" style="color:#CCCCCC">此信件為系統自動發送，請勿直接回覆</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- footer end -->
+      <tr>
+        <td height="30"></td>
+      </tr>
+    </table>
+  </body>
+</html>

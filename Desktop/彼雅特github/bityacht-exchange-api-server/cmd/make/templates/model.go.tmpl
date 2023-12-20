@@ -1,0 +1,14 @@
+package {{.Package}}
+
+//! Check the TableName is correct or not.
+// TableName of {{.TableName}} table
+// const TableName = "{{.TableName}}"
+
+// Model of {{.TableName}} table
+type Model struct {
+}
+
+// TableName of Model
+func (Model) TableName() string {
+	return TableName
+}

@@ -1,0 +1,38 @@
+{{$migrationName := (printf "%s%d" "Migration" .TimeStamp) -}}
+{{/* --------------------------------- */ -}}
+package migrations
+
+import (
+	"gorm.io/gorm"
+	"bityacht-exchange-api-server/cmd/migrate"
+)
+
+func init() {
+	migrate.Register(&{{$migrationName}}{})
+}
+
+// {{$migrationName}} is a kind of IMigration, You can define schema here.
+type {{$migrationName}} struct {
+}
+
+// TableName for gorm
+func (*{{$migrationName}}) TableName() string {
+	//! Check the TableName is correct or not.
+	// return "{{.TableName}}"
+}
+
+// Version for IMigration
+func (*{{$migrationName}}) Version() int64 {
+	return {{.TimeStamp}}
+}
+
+// Up for IMigration
+func (m *{{$migrationName}}) Up(db *gorm.DB) error {
+	//! DO NOT use db.AutoMigrate()
+	// Example: db.Migrator().CreateTable(m)
+}
+
+// Down for IMigration
+func (m *{{$migrationName}}) Down(db *gorm.DB) error {
+	// Example: db.Migrator().DropTable(m)
+}

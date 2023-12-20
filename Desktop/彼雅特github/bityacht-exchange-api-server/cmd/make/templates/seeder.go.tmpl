@@ -1,0 +1,38 @@
+{{$seederName := (printf "%s%s" "Seeder" .Name) -}}
+{{/* --------------------------------- */ -}}
+package seeders
+
+import (
+	"gorm.io/gorm"
+	"bityacht-exchange-api-server/cmd/seed"
+)
+
+func init() {
+	seed.Register(&{{$seederName}}{})
+}
+
+// {{$seederName}} is a kind of ISeeder, You can set it as same as model.
+type {{$seederName}} struct {
+}
+
+// SeederName for ISeeder
+func (*{{$seederName}}) SeederName() string {
+	return "{{.Name}}"
+}
+
+// TableName for gorm
+func (*{{$seederName}}) TableName() string {
+    // Check the TableName is correct or not.
+	// return "{{.TableName}}"
+}
+
+// Default for ISeeder
+func (*{{$seederName}}) Default(db *gorm.DB) error {
+    // records := []{{$seederName}}{}
+    // return db.Create(&records).Error
+}
+
+// Fake for ISeeder
+func (*{{$seederName}}) Fake(db *gorm.DB) error {
+    return seed.ErrNotImplement
+}

@@ -1,0 +1,7530 @@
+basePath: /api/v1
+definitions:
+  admin.ForgotPasswordRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+    required:
+    - account
+    type: object
+  admin.LoginRequest:
+    properties:
+      account:
+        type: string
+      password:
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  admin.LoginResponse:
+    properties:
+      accessToken:
+        description: JWT Token
+        type: string
+      needChangePassword:
+        type: boolean
+    required:
+    - accessToken
+    type: object
+  admin.UpdatePasswordRequest:
+    properties:
+      password:
+        type: string
+    required:
+    - password
+    type: object
+  assets.AssetInfo:
+    properties:
+      currenciesName:
+        description: 幣種名稱
+        type: string
+      currenciesSymbol:
+        description: 幣種
+        type: string
+      freeAmount:
+        description: 持有數量
+        type: number
+      lockedAmount:
+        description: 處理中數額
+        type: number
+      valuation:
+        description: 當前估值(TWD)
+        type: number
+    type: object
+  assets.GetResponse:
+    properties:
+      assetInfos:
+        description: 資產清單
+        items:
+          $ref: '#/definitions/assets.AssetInfo'
+        type: array
+      cryptocurrencyValuation:
+        description: 數位資產估值
+        type: number
+      fiatBalance:
+        description: 法幣餘額
+        type: number
+      histories:
+        description: 總資產估值
+        items:
+          type: number
+        type: array
+    type: object
+  bank.GetResponse:
+    properties:
+      account:
+        description: 帳號
+        type: string
+      auditTime:
+        description: 審核時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      bankInfo:
+        allOf:
+        - $ref: '#/definitions/banks.Bank'
+        description: 銀行資訊
+      banksCode:
+        description: 銀行代碼
+        type: string
+      branchInfo:
+        allOf:
+        - $ref: '#/definitions/bankbranchs.Branch'
+        description: 分行資訊
+      branchsCode:
+        description: 分行代碼
+        type: string
+      coverImage:
+        description: 封面照片
+        type: string
+      createdAt:
+        description: 綁定時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      id:
+        type: integer
+      name:
+        description: 帳戶名稱
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/bankaccounts.Status'
+        description: |-
+          綁定狀態
+          * 0: 未綁定
+          * 1: 審查中
+          * 2: 已通過
+          * 3: 未通過
+    type: object
+  bank.PatchRequest:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      id:
+        description: 帳戶 ID
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/bankaccounts.Status'
+        description: |-
+          帳戶狀態
+          * 1: 審核中
+          * 2: 已綁定
+          * 3: 未通過
+        maximum: 3
+        minimum: 1
+    required:
+    - id
+    - status
+    type: object
+  bankaccounts.Status:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - BALStatusUnknown
+    - BALStatusPending
+    - BALStatusAccepted
+    - BALStatusRejected
+  bankbranchs.Branch:
+    properties:
+      chinese:
+        description: 分行名稱（中文）
+        type: string
+      code:
+        description: 分行代號
+        type: string
+      english:
+        description: 分行名稱（英文）
+        type: string
+    type: object
+  banks.Bank:
+    properties:
+      chinese:
+        description: 銀行名稱（中文）
+        type: string
+      code:
+        description: 銀行代號
+        type: string
+      english:
+        description: 銀行名稱（英文）
+        type: string
+    type: object
+  banks.UpsertAccountRequest:
+    properties:
+      account:
+        description: 帳號
+        type: string
+      banksCode:
+        description: 銀行代號
+        type: string
+      branchsCode:
+        description: 分行代號
+        type: string
+      coverImage:
+        description: 封面照片
+        type: string
+      name:
+        description: 帳戶名稱
+        type: string
+    type: object
+  banners.PriorityUpdateRequset:
+    properties:
+      rows:
+        items:
+          properties:
+            id:
+              type: integer
+            priority:
+              type: integer
+          type: object
+        type: array
+    type: object
+  banners.Status:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - StatusDisable
+    - StatusEnable
+  banners.UpdateRequest:
+    properties:
+      button:
+        type: string
+      buttonUrl:
+        type: string
+      endAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      startAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      status:
+        $ref: '#/definitions/banners.Status'
+      subTitle:
+        type: string
+      title:
+        type: string
+    type: object
+  bityacht-exchange-api-server_internal_cache_memory_banners.Banner:
+    properties:
+      appImage:
+        description: 手機版圖檔 URL
+        type: string
+      buttonText:
+        description: 按鈕文字
+        type: string
+      buttonUrl:
+        description: 按鈕連結
+        type: string
+      subTitle:
+        description: 副標
+        type: string
+      title:
+        description: 大標
+        type: string
+      webImage:
+        description: Web 圖檔 URL
+        type: string
+    type: object
+  bityacht-exchange-api-server_internal_database_sql_banners.Banner:
+    properties:
+      appImage:
+        type: string
+      button:
+        type: string
+      buttonUrl:
+        type: string
+      endAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      id:
+        type: integer
+      priority:
+        type: integer
+      startAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      status:
+        type: integer
+      subTitle:
+        type: string
+      title:
+        type: string
+      webImage:
+        type: string
+    type: object
+  commissions.GetCommissionsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/userscommissions.Commission'
+        type: array
+      notWithdrew:
+        description: 尚未提領
+        type: number
+      page:
+        description: 'Default: 1'
+        type: integer
+      pageSize:
+        description: 'Default: 25'
+        type: integer
+      totalReward:
+        description: 累計獎勵
+        type: number
+    type: object
+  countries.Country:
+    properties:
+      chinese:
+        description: 中文
+        type: string
+      code:
+        description: ISO-3166 Alpha-3
+        type: string
+      english:
+        description: 英文
+        type: string
+      locale:
+        description: 語言(For KryptoGO)
+        type: string
+    type: object
+  duediligences.Bool:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - BoolUnknown
+    - BoolFalse
+    - BoolTrue
+  duediligences.Review:
+    properties:
+      complianceReview:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          法遵審查
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+      countriesCode:
+        description: 國籍
+        type: string
+      createdAt:
+        description: 送審日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dueDiligencesID:
+        description: 審查單號
+        type: integer
+      finalReview:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          審核結果
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+          * 4: 身分驗證審核未通過
+          * 5: 待複核
+      finalReviewTime:
+        description: 審查日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      firstName:
+        description: 姓名
+        type: string
+      internalRisksTotal:
+        description: 內部風險審核
+        type: integer
+      lastName:
+        description: 姓氏
+        type: string
+      usersID:
+        description: 使用者 UID
+        type: integer
+    required:
+    - dueDiligencesID
+    - usersID
+    type: object
+  duediligences.UserWithDD:
+    properties:
+      address:
+        description: 地址
+        type: string
+      annualIncome:
+        description: 年收入
+        type: string
+      birthDate:
+        description: 生日
+        format: date(YYYY/MM/DD)
+        type: string
+      complianceReview:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          法遵審查
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+      complianceReviewComment:
+        description: 法遵審查備註
+        type: string
+      countriesCode:
+        description: 國家
+        type: string
+      createdAt:
+        description: 申請時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      faceImage:
+        description: 臉部照片
+        type: string
+      finalReview:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          最終審查
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+          * 4: 身分驗證審核未通過
+          * 5: 待複核
+      finalReviewComment:
+        description: 最終審查 緣由備註
+        type: string
+      finalReviewNotice:
+        description: 最終審查 通知訊息
+        type: string
+      firstName:
+        description: 姓名
+        type: string
+      fundsSources:
+        description: 資金來源
+        type: string
+      idAndFaceImage:
+        description: 身分證 or 居留證 + 臉部照片
+        type: string
+      idBackImage:
+        description: 身分證 or 居留證 (背面)
+        type: string
+      idImage:
+        description: 身分證 or 居留證 (正面)
+        type: string
+      idvAuditStatus:
+        allOf:
+        - $ref: '#/definitions/idverifications.AuditStatus'
+        description: |-
+          本國人: IDV 驗證結果； 外國人: 認證結果
+          * 0: 未知
+          * 1: 未驗證
+          * 2: 接受
+          * 3: 拒絕
+      idvState:
+        allOf:
+        - $ref: '#/definitions/idverifications.State'
+        description: |-
+          IDV 自動驗證狀態
+          * 0: 未知
+          * 1: 通過
+          * 2: 需人工驗證
+          * 3: 不通過
+          * 4: 驗證中
+          * 5: 驗證初始化
+      idvTaskID:
+        description: IDV 單號
+        type: string
+      idvType:
+        allOf:
+        - $ref: '#/definitions/idverifications.Type'
+        description: |-
+          IDV 類型
+          * 1: 人工審查（外國人）
+          * 2: KryptoGO（本國人）
+      industrialClassificationsID:
+        description: 行業別 ID
+        type: integer
+      internalRisksTotal:
+        description: 內部風險審核
+        type: integer
+      kryptoAuditAccepted:
+        allOf:
+        - $ref: '#/definitions/duediligences.Bool'
+        description: |-
+          KryptoGO 複核
+          * 0: 未複核
+          * 1: 拒絕
+          * 2: 通過
+      kryptoID:
+        description: KryptoGO 單號
+        type: string
+      kryptoPotentialRisk:
+        description: KryptoGO 風險評分
+        type: integer
+      kryptoSanctionMatched:
+        allOf:
+        - $ref: '#/definitions/duediligences.Bool'
+        description: |-
+          KryptoGO 管制名單
+          * 0: 未知
+          * 1: 未命中
+          * 2: 命中
+      lastName:
+        description: 姓氏
+        type: string
+      nameCheck:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          姓名檢核排除評估
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+      nameCheckPdfName:
+        description: 姓名檢核排除評估 PDF 名稱
+        type: string
+      nationalID:
+        description: 身分證字號 or 居留證號碼
+        type: string
+      passportImage:
+        description: 護照
+        type: string
+      passportNumber:
+        description: 護照號碼
+        type: string
+      phone:
+        description: 手機
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+    type: object
+  errpkg.Code:
+    enum:
+    - 4000
+    - 4001
+    - 4002
+    - 4003
+    - 4004
+    - 4005
+    - 4006
+    - 4007
+    - 4008
+    - 4009
+    - 4010
+    - 4011
+    - 4012
+    - 4013
+    - 4014
+    - 4015
+    - 4016
+    - 4017
+    - 4018
+    - 4019
+    - 4020
+    - 4021
+    - 4022
+    - 4023
+    - 4024
+    - 4025
+    - 4026
+    - 4027
+    - 4028
+    - 4029
+    - 4030
+    - 4031
+    - 4032
+    - 4033
+    - 4034
+    - 4035
+    - 4036
+    - 4037
+    - 4038
+    - 4039
+    - 4040
+    - 4041
+    - 4042
+    - 4043
+    - 4044
+    - 5000
+    - 5001
+    - 5002
+    - 5003
+    - 5004
+    - 5005
+    - 5006
+    - 5007
+    - 5008
+    - 5009
+    - 5010
+    - 5011
+    - 5012
+    - 5013
+    - 5014
+    - 5015
+    - 5016
+    - 5017
+    - 5018
+    - 5019
+    - 5020
+    - 5021
+    - 5022
+    - 5023
+    - 5024
+    - 5025
+    - 5026
+    - 5027
+    - 5028
+    - 5029
+    - 5030
+    - 5031
+    - 5032
+    - 5033
+    - 5034
+    - 5035
+    - 5036
+    - 5037
+    - 5038
+    - 5039
+    - 5040
+    - 5041
+    - 9993
+    - 9994
+    - 9995
+    - 9996
+    - 9997
+    - 9998
+    - 9999
+    type: integer
+    x-enum-comments:
+      CodeBadErrorType: Use general error instead of *Error
+    x-enum-varnames:
+    - CodeBindBody
+    - CodeUnauthorized
+    - CodeJWTBadSigning
+    - CodeJWTInvalid
+    - CodeJWTRevoked
+    - CodeBadAuthorizationToken
+    - CodePermissionDenied
+    - CodeAccountDuplicated
+    - CodeBadParam
+    - CodeRecordNotFound
+    - CodeRecordNoChange
+    - CodeBadBody
+    - CodeAccountNotAvailable
+    - CodeInsufficientFunds
+    - CodeBadQuery
+    - CodeFundDeleted
+    - CodeTooManyRequests
+    - CodeBadPasswordStrength
+    - CodeOverResetPasswordLimit
+    - CodeBadUploadedFileType
+    - CodeFileNotFound
+    - CodeEmailAlreadyVerified
+    - CodeBadVerificationCode
+    - CodeVerificationCodeExpired
+    - CodeBadMobileBarcodeFormat
+    - CodeBadInviteCode
+    - CodeImageOverSize
+    - CodeBadDataURIImageFormat
+    - CodeBadImageData
+    - CodeBadNationalID
+    - CodeNationalIDDuplicated
+    - CodeBadAction
+    - CodeInsufficientBalance
+    - CodeBadAmount
+    - CodeTransactionPairNotFound
+    - CodeCurrencyNotFound
+    - CodeBadCalcOfTransaction
+    - CodeBadTransactionPairStatus
+    - CodeTemporaryForbidden
+    - CodeBadCSVContent
+    - CodeMobileBarcodeNotExist
+    - CodeBadCryptocurrencyAddress
+    - CodePhoneNumberDuplicated
+    - CodeOverWithdrawalWhitelistLimit
+    - CodeTooManyFiles
+    - CodeSql
+    - CodeJWTIssueToken
+    - CodeGetClaims
+    - CodeBadClaimsType
+    - CodeSendEmail
+    - CodeJWTBadPayload
+    - CodeEncryption
+    - CodeGormScan
+    - CodeGormValue
+    - CodeNewHTTPRequest
+    - CodeDoHTTPRequest
+    - CodeReadHTTPResponse
+    - CodeSendSMS
+    - CodeJSONMarshal
+    - CodeJSONUnmarshal
+    - CodeBadAmountOfFundsInTransactions
+    - CodeBadRecord
+    - CodeSaveUploadedFile
+    - CodeRedis
+    - CodeRedisBadScript
+    - CodeCallBinanceAPI
+    - CodeParseURL
+    - CodeCallMaxAPI
+    - CodeJSONDecode
+    - CodeParseIP
+    - CodeLookUpMMDB
+    - CodeCallEZReceiptAPI
+    - CodeLoginEZReceiptAPI
+    - CodeBadParamEZReceiptAPI
+    - CodeWriteCSV
+    - CodeCallKryptoGOAPI
+    - CodeExecuteTemplate
+    - CodeUpdateCache
+    - CodeCallCybavoAPI
+    - CodeCybavoWalletNotFound
+    - CodeWalletAddressNotGen
+    - CodeWalletAddressAlreadySet
+    - CodeGenQRCode
+    - CodeAddressDeploying
+    - CodeMemoryCacheError
+    - CodeBadBase32String
+    - CodeGenerateHOTP
+    - CodeBadErrorType
+    - CodeFailedToGenerateID
+    - CodeScheduleJobKeyDuplicated
+    - CodeBadCoding
+    - CodeNotInit
+    - CodeNotImplement
+    - CodeUnknown
+  errpkg.JsonError:
+    properties:
+      code:
+        $ref: '#/definitions/errpkg.Code'
+      data: {}
+      error:
+        type: string
+    required:
+    - code
+    type: object
+  idv.CheckPhoneRequest:
+    properties:
+      phone:
+        description: 行動電話, 格式： ^09[0-9]{8}$
+        type: string
+    required:
+    - phone
+    type: object
+  idv.CreateIDVerificationRequest:
+    properties:
+      address:
+        description: 居住地址
+        type: string
+      annualIncome:
+        description: 年收入
+        type: string
+      birthDate:
+        description: 出生年月日
+        format: date(YYYY/MM/DD)
+        type: string
+      countriesCode:
+        description: 國籍
+        type: string
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      firstName:
+        description: 真實名字
+        type: string
+      fundsSources:
+        description: 資金來源
+        type: string
+      idAndFaceImage:
+        description: 手持自拍照 (Data URI Scheme with Base64)
+        type: string
+      idBackImage:
+        description: 居留證背面 (Data URI Scheme with Base64)
+        type: string
+      idImage:
+        description: 居留證正面 (Data URI Scheme with Base64)
+        type: string
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      investmentExperience:
+        description: 投資經驗
+        type: string
+      lastName:
+        description: 真實姓氏
+        type: string
+      nationalID:
+        description: 身分證號碼 or 居留證號碼
+        type: string
+      passportImage:
+        description: 護照證件照 (Data URI Scheme with Base64)
+        type: string
+      passportNumber:
+        description: 護照號碼
+        type: string
+      phoneToken:
+        description: 行動電話 - 驗證 Token (實際創建時為必填)
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+    required:
+    - address
+    - annualIncome
+    - birthDate
+    - countriesCode
+    - firstName
+    - fundsSources
+    - industrialClassificationsID
+    - investmentExperience
+    - lastName
+    - nationalID
+    - purposeOfUse
+    type: object
+  idv.CreateIDVerificationResponse:
+    properties:
+      idVerificationUrl:
+        type: string
+    type: object
+  idv.IssuePhoneVerificationCodeRequest:
+    properties:
+      address:
+        description: 居住地址
+        type: string
+      annualIncome:
+        description: 年收入
+        type: string
+      birthDate:
+        description: 出生年月日
+        format: date(YYYY/MM/DD)
+        type: string
+      countriesCode:
+        description: 國籍
+        type: string
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      firstName:
+        description: 真實名字
+        type: string
+      fundsSources:
+        description: 資金來源
+        type: string
+      idAndFaceImage:
+        description: 手持自拍照 (Data URI Scheme with Base64)
+        type: string
+      idBackImage:
+        description: 居留證背面 (Data URI Scheme with Base64)
+        type: string
+      idImage:
+        description: 居留證正面 (Data URI Scheme with Base64)
+        type: string
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      investmentExperience:
+        description: 投資經驗
+        type: string
+      lastName:
+        description: 真實姓氏
+        type: string
+      nationalID:
+        description: 身分證號碼 or 居留證號碼
+        type: string
+      passportImage:
+        description: 護照證件照 (Data URI Scheme with Base64)
+        type: string
+      passportNumber:
+        description: 護照號碼
+        type: string
+      phone:
+        description: 行動電話, 格式： ^09[0-9]{8}$
+        type: string
+      phoneToken:
+        description: 行動電話 - 驗證 Token (實際創建時為必填)
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+    required:
+    - address
+    - annualIncome
+    - birthDate
+    - countriesCode
+    - firstName
+    - fundsSources
+    - industrialClassificationsID
+    - investmentExperience
+    - lastName
+    - nationalID
+    - phone
+    - purposeOfUse
+    type: object
+  idv.UpdateIDVImageRequest:
+    properties:
+      idAndFaceImage:
+        description: 手持自拍照 (Data URI Scheme with Base64)
+        type: string
+      idBackImage:
+        description: 居留證背面 (Data URI Scheme with Base64)
+        type: string
+      idImage:
+        description: 居留證正面 (Data URI Scheme with Base64)
+        type: string
+      passportImage:
+        description: 護照證件照 (Data URI Scheme with Base64)
+        type: string
+    type: object
+  idv.VerifyPhoneRequest:
+    properties:
+      phone:
+        description: 行動電話, 格式： ^09[0-9]{8}$
+        type: string
+      verificationCode:
+        description: 行動電話驗證碼
+        type: string
+    required:
+    - phone
+    - verificationCode
+    type: object
+  idv.VerifyPhoneResponse:
+    properties:
+      phoneToken:
+        description: 行動電話 - 驗證 Token
+        type: string
+    required:
+    - phoneToken
+    type: object
+  idverifications.AuditStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - AuditStatusUnknown
+    - AuditStatusPending
+    - AuditStatusAccepted
+    - AuditStatusRejected
+  idverifications.State:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    type: integer
+    x-enum-varnames:
+    - StateUnknown
+    - StateAccept
+    - StateReview
+    - StateReject
+    - StatePending
+    - StateInitial
+  idverifications.Type:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - TypeManual
+    - TypeKryptoGO
+  industrialclassifications.IC:
+    properties:
+      chinese:
+        description: 中文
+        type: string
+      code:
+        description: 中華民國 行業統計分類 代號
+        type: string
+      english:
+        description: 英文
+        type: string
+      id:
+        type: integer
+    type: object
+  invite.GetInfoResponse:
+    properties:
+      inviteCode:
+        description: 邀請碼
+        type: string
+      notWithdrew:
+        description: 尚未領取
+        type: number
+      totalInvited:
+        description: 邀請人數
+        type: integer
+      totalReward:
+        description: 累積獎勵
+        type: number
+      totalSucceed:
+        description: 達成人數
+        type: integer
+    type: object
+  levellimits.Limit:
+    properties:
+      max:
+        description: '上限 (小於 0: 無限制, 等於 0: 無權限)'
+        type: string
+      min:
+        description: '下限 (小於 0: 無限制, 等於 0: 0)'
+        type: string
+    type: object
+  levellimits.LimitByAction:
+    properties:
+      perDay:
+        allOf:
+        - $ref: '#/definitions/levellimits.Limit'
+        description: 單日限額
+      perMonth:
+        allOf:
+        - $ref: '#/definitions/levellimits.Limit'
+        description: 單月限額
+      perTransaction:
+        allOf:
+        - $ref: '#/definitions/levellimits.Limit'
+        description: 單筆限額
+    type: object
+  mainnets.Mainnet:
+    properties:
+      currenciesSymbol:
+        description: 幣種
+        type: string
+      mainnet:
+        description: 鏈
+        type: string
+      name:
+        description: 鏈名
+        type: string
+      withdrawFee:
+        description: 手續費
+        type: number
+      withdrawMin:
+        description: 最小提幣數量
+        type: number
+    type: object
+  mainnets.UpdateRequest:
+    properties:
+      withdrawFee:
+        description: 手續費 (單位 = Currency)
+        type: number
+      withdrawMin:
+        description: 最小提幣數量 (單位 = Currency)
+        type: number
+    type: object
+  managers.CreateRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+      managersRolesID:
+        description: 管理者角色
+        type: integer
+      name:
+        description: 管理者名稱
+        type: string
+    required:
+    - account
+    - managersRolesID
+    - name
+    type: object
+  managers.Manager:
+    properties:
+      account:
+        type: string
+      id:
+        type: integer
+      managersRolesID:
+        type: integer
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/managers.Status'
+    required:
+    - account
+    - id
+    - managersRolesID
+    - name
+    type: object
+  managers.Status:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - StatusDisable
+    - StatusEnable
+  managers.UpdateRequest:
+    properties:
+      account:
+        type: string
+      managersRolesID:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      status:
+        $ref: '#/definitions/managers.Status'
+    type: object
+  modelpkg.GetResponse:
+    properties:
+      data: {}
+      page:
+        description: 'Default: 1'
+        type: integer
+      pageSize:
+        description: 'Default: 25'
+        type: integer
+    required:
+    - data
+    type: object
+  receipts.DetailItem:
+    properties:
+      barcode:
+        description: 'Barcode: 載具編號'
+        type: string
+      createdAt:
+        description: 'CreatedAt: 發票建立時間'
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      id:
+        description: 'ID: 訂單號碼'
+        type: string
+      invoiceAmount:
+        description: 'InvoiceAmount: 發票金額'
+        type: integer
+      invoiceID:
+        description: 'InvoiceID: 發票號碼'
+        type: string
+      invoiceIssuedAt:
+        description: 'InvoiceIssuedAt: 發票開立時間'
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      salesAmount:
+        description: 'SalesAmount: 銷售額(未稅價)'
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/receipts.Status'
+        description: "Status: 發票狀態\n\t* 1: 未開立\n\t* 2: 開立中\n\t* 3: 已開立\n\t* 4: 已失敗"
+      tax:
+        description: 'Tax: 營業稅額'
+        type: integer
+    required:
+    - barcode
+    - createdAt
+    - id
+    - invoiceAmount
+    - salesAmount
+    - status
+    - tax
+    type: object
+  receipts.IssueRequest:
+    properties:
+      ids:
+        items:
+          type: string
+        minItems: 1
+        type: array
+        uniqueItems: true
+    required:
+    - ids
+    type: object
+  receipts.ListItem:
+    properties:
+      createdAt:
+        description: 'CreatedAt: 發票建立時間'
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      id:
+        description: 'ID: 訂單號碼'
+        type: string
+      invoiceAmount:
+        description: 'InvoiceAmount: 發票金額'
+        type: integer
+      invoiceID:
+        description: 'InvoiceID: 發票號碼'
+        type: string
+      invoiceIssuedAt:
+        description: 'InvoiceIssuedAt: 發票開立時間'
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/receipts.Status'
+        description: "Status: 發票狀態\n\t* 1: 未開立\n\t* 2: 開立中\n\t* 3: 已開立\n\t* 4: 已失敗"
+    required:
+    - createdAt
+    - id
+    - invoiceAmount
+    - status
+    type: object
+  receipts.Status:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - StatusUnknown
+    - StatusPending
+    - StatusIssuing
+    - StatusIssued
+    - StatusFailed
+  risks.CreateRequest:
+    properties:
+      detail:
+        type: string
+      factor:
+        type: string
+      score:
+        type: integer
+      subFactor:
+        type: string
+    required:
+    - detail
+    - factor
+    - score
+    - subFactor
+    type: object
+  risks.Risk:
+    properties:
+      createdAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      detail:
+        type: string
+      factor:
+        type: string
+      id:
+        type: integer
+      score:
+        type: integer
+      subFactor:
+        type: string
+    type: object
+  risks.UpdateRequest:
+    properties:
+      detail:
+        type: string
+      factor:
+        type: string
+      score:
+        type: integer
+      subFactor:
+        type: string
+    type: object
+  risks.UpdateRisksRequest:
+    properties:
+      risksIDs:
+        items:
+          type: integer
+        type: array
+    type: object
+  settings.GetWithdraw2FAInfoResponse:
+    properties:
+      qrCode:
+        items:
+          type: integer
+        type: array
+      secret:
+        type: string
+      token:
+        type: string
+    required:
+    - token
+    type: object
+  settings.UpdateMobileBarcodeRequest:
+    properties:
+      mobileBarcode:
+        type: string
+    type: object
+  settings.UpdatePasswordRequest:
+    properties:
+      newPassword:
+        type: string
+      oldPassword:
+        type: string
+    required:
+    - newPassword
+    - oldPassword
+    type: object
+  settings.UpdateWithdraw2FAInfoRequest:
+    properties:
+      token:
+        type: string
+      verificationCode:
+        description: 驗證碼
+        type: string
+    type: object
+  spot.CreateTransactionRequest:
+    properties:
+      baseSymbol:
+        description: 基準貨幣代號
+        type: string
+      earnAmount:
+        description: 獲得數量
+        type: number
+      handlingCharge:
+        description: '手續費 (單位: 獲得的幣別)'
+        type: number
+      payAmount:
+        description: 支付數量
+        type: number
+      price:
+        description: 價格
+        type: number
+      quoteSymbol:
+        description: 標價貨幣代號
+        type: string
+      side:
+        allOf:
+        - $ref: '#/definitions/userstransactions.Side'
+        description: |-
+          方向
+          * 1: 買 (花費標價 -> 獲得基準)
+          * 2: 賣 (花費基準 -> 獲得標價)
+        maximum: 2
+        minimum: 1
+    type: object
+  spottrend.SpotTrend:
+    properties:
+      baseName:
+        description: 基準貨幣全名
+        type: string
+      basePrecision:
+        description: 基準貨幣精準度 (小數後幾位)
+        type: integer
+      baseSymbol:
+        description: 基準貨幣代號
+        type: string
+      buyPrice:
+        description: 買入價格 (單位=標價貨幣)
+        type: number
+      handlingChargeRate:
+        description: 手續費 (%)
+        type: number
+      maxNotional:
+        description: 最大單位 (Price * Quantity)
+        type: number
+      minNotional:
+        description: 最小單位 (Price * Quantity)
+        type: number
+      quoteName:
+        description: 標價貨幣全名
+        type: string
+      quotePrecision:
+        description: 標價貨幣精準度 (小數後幾位)
+        type: integer
+      quoteSymbol:
+        description: 標價貨幣代號
+        type: string
+      sellPrice:
+        description: 賣出價格 (單位=標價貨幣)
+        type: number
+      status:
+        allOf:
+        - $ref: '#/definitions/transactionpairs.Status'
+        description: |-
+          狀態
+          * 0: 暫時關閉
+          * 1: 正常
+      trend:
+        description: 7日價格走勢
+        items:
+          type: number
+        type: array
+      upsAndDowns:
+        description: 24H 漲跌 （%）
+        type: number
+    type: object
+  sqlcache.BankInfo:
+    properties:
+      branchs:
+        items:
+          $ref: '#/definitions/bankbranchs.Branch'
+        type: array
+      chinese:
+        description: 銀行名稱（中文）
+        type: string
+      code:
+        description: 銀行代號
+        type: string
+      english:
+        description: 銀行名稱（英文）
+        type: string
+    type: object
+  sqlcache.BankOptionsResponse:
+    properties:
+      banks:
+        items:
+          $ref: '#/definitions/sqlcache.BankInfo'
+        type: array
+    type: object
+  sqlcache.IDVOptionsResponse:
+    properties:
+      countries:
+        description: 國籍 & 雙重國籍 列表
+        items:
+          $ref: '#/definitions/countries.Country'
+        type: array
+      ics:
+        description: 行業別列表
+        items:
+          $ref: '#/definitions/industrialclassifications.IC'
+        type: array
+    type: object
+  sqlcache.SpotOptionsResponse:
+    properties:
+      mainnets:
+        additionalProperties:
+          additionalProperties:
+            type: string
+          type: object
+        description: map[幣別]map[主網] => 主網名稱
+        type: object
+    type: object
+  suspicioustransactions.SuspiciousTX:
+    properties:
+      createdAt:
+        description: 掃描時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dedicatedReviewResult:
+        description: |-
+          狀態 (= 專責審查結果)
+          * 1: 待審核
+          * 2: 通過
+          * 3: 駁回
+        type: integer
+      email:
+        description: E-Mail
+        type: string
+      firstName:
+        description: 名
+        type: string
+      id:
+        description: 案件單號
+        type: integer
+      lastName:
+        description: 姓
+        type: string
+      orderID:
+        description: 訂單編號
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/suspicioustransactionspkg.Type'
+        description: |-
+          可疑樣態
+          * 1: 多筆提領態樣
+          * 2: 多筆同額態樣
+          * 3: 同一出金地址態樣
+          * 4: 迅速轉出態樣
+          * 5: 迅速買賣態樣
+          * 6: 小額接收大額轉出態樣
+      usersID:
+        description: UID
+        type: integer
+    type: object
+  suspicioustransactions.SuspiciousTXDetail:
+    properties:
+      annualIncome:
+        description: 年收入
+        type: string
+      countriesCode:
+        description: 國籍
+        type: string
+      createdAt:
+        description: 掃描時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dedicatedReviewComment:
+        description: 專責審查(備註)
+        type: string
+      dedicatedReviewResult:
+        description: |-
+          狀態 (= 專責審查結果)
+          * 1: 待審核
+          * 2: 通過
+          * 3: 駁回
+        type: integer
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      email:
+        description: E-Mail
+        type: string
+      firstName:
+        description: 名
+        type: string
+      fundsSources:
+        description: 資金來源
+        type: string
+      id:
+        description: 案件單號
+        type: integer
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      informationReviewComment:
+        description: 資訊審核(備註)
+        type: string
+      informationReviewFiles:
+        description: 資訊審核(檔案)
+        items:
+          type: string
+        type: array
+      informations:
+        allOf:
+        - $ref: '#/definitions/suspicioustransactionspkg.Information'
+        description: 交易資訊
+      lastName:
+        description: 姓
+        type: string
+      nationalID:
+        description: 身份證字號
+        type: string
+      orderID:
+        description: 訂單編號
+        type: string
+      phone:
+        description: 手機
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+      registerAt:
+        description: 註冊時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      registerIP:
+        description: 註冊IP
+        type: string
+      reportMJIBAt:
+        description: 呈報調查局日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      riskReviewFiles:
+        description: 風控審查(檔案)
+        items:
+          type: string
+        type: array
+      riskReviewResult:
+        description: |-
+          風控審查(結果)
+          * 1: 待審核
+          * 2: 非可疑交易
+          * 3: 有可疑交易風險
+        type: integer
+      type:
+        allOf:
+        - $ref: '#/definitions/suspicioustransactionspkg.Type'
+        description: |-
+          可疑樣態
+          * 1: 多筆提領態樣
+          * 2: 多筆同額態樣
+          * 3: 同一出金地址態樣
+          * 4: 迅速轉出態樣
+          * 5: 迅速買賣態樣
+          * 6: 小額接收大額轉出態樣
+      usersID:
+        description: UID
+        type: integer
+    type: object
+  suspicioustransactions.UpdateFilesType:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - UpdateFilesTypeInformationReview
+    - UpdateFilesTypeRiskReview
+  suspicioustransactions.UpdateRequest:
+    properties:
+      comment:
+        description: 備註 (資訊審核 or 專責審查)
+        type: string
+      dedicatedReviewResult:
+        description: |-
+          專責審查結果
+          * 1: 待審核
+          * 2: 通過
+          * 3: 駁回
+        type: integer
+      reportMJIBAt:
+        description: 呈報調查局日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      riskReviewResult:
+        description: |-
+          風控審查結果
+          * 1: 待審核
+          * 2: 非可疑交易
+          * 3: 有可疑交易風險
+        type: integer
+      type:
+        allOf:
+        - $ref: '#/definitions/suspicioustransactions.UpdateType'
+        description: |-
+          更新類型
+          * 1: 資訊審核 (所需欄位：備註)
+          * 2: 風控審查結果 (所需欄位：風控審查結果)
+          * 3: 專責審查 (所需欄位：專責審查結果、備註)
+          * 4: 呈報調查局日期 (所需欄位：呈報調查局日期)
+        maximum: 4
+        minimum: 1
+    required:
+    - type
+    type: object
+  suspicioustransactions.UpdateType:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - UpdateTypeInformationReviewComment
+    - UpdateTypeRiskReviewResult
+    - UpdateTypeDedicatedReview
+    - UpdateTypeReportMJIBAt
+  suspicioustransactionspkg.Information:
+    properties:
+      loginAt:
+        type: string
+      spotTransfers:
+        items:
+          $ref: '#/definitions/usersspottransfers.Transfer'
+        type: array
+      transactions:
+        items:
+          $ref: '#/definitions/userstransactions.TransactionForManager'
+        type: array
+    type: object
+  suspicioustransactionspkg.Type:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    type: integer
+    x-enum-varnames:
+    - TypeMultipleWithdrawal
+    - TypeMultipleSameAmount
+    - TypeMultipleSameWithdrawalAddress
+    - TypeQuicklyWithdraw
+    - TypeQuicklyTrade
+    - TypeSmallInBigOut
+  transactionpairs.Status:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - StatusDisable
+    - StatusEnable
+  transactionpairs.TransactionPair:
+    properties:
+      baseCurrenciesDecimalPrecision:
+        type: integer
+      baseCurrenciesSymbol:
+        type: string
+      handlingChargeRate:
+        format: Decimal(27, 9)
+        type: string
+      quoteCurrenciesDecimalPrecision:
+        type: integer
+      quoteCurrenciesSymbol:
+        type: string
+      spreadsOfBuy:
+        format: Decimal(27, 9)
+        type: string
+      spreadsOfsell:
+        format: Decimal(27, 9)
+        type: string
+      status:
+        $ref: '#/definitions/transactionpairs.Status'
+    type: object
+  transactionpairs.UpdateRequest:
+    properties:
+      baseCurrenciesSymbol:
+        type: string
+      handlingChargeRate:
+        format: Decimal(27, 9)
+        type: string
+      quoteCurrenciesSymbol:
+        type: string
+      spreadsOfBuy:
+        format: Decimal(27, 9)
+        type: string
+      spreadsOfsell:
+        format: Decimal(27, 9)
+        type: string
+      status:
+        $ref: '#/definitions/transactionpairs.Status'
+    type: object
+  user.ForgotPasswordRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+    required:
+    - account
+    type: object
+  user.LoginRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+      password:
+        description: 密碼
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  user.LoginResponse:
+    properties:
+      accessToken:
+        description: JWT Token
+        type: string
+      accountNotVerified:
+        description: 帳號尚未認證
+        type: boolean
+      id:
+        description: Users ID
+        type: integer
+      login2FAType:
+        allOf:
+        - $ref: '#/definitions/users.TwoFAType'
+        description: |-
+          兩階段認證類型(Bitwise):
+          * 0: None
+          * 1: Email
+          * 2: SMS
+          * 4: Google Authenticator
+      onePassKey:
+        type: string
+      refreshToken:
+        type: string
+      refreshTokenExpiredAt:
+        type: string
+      verificationCode:
+        description: 驗證碼(Only in Debug Mode)
+        type: string
+    required:
+    - accessToken
+    - id
+    - login2FAType
+    - refreshToken
+    - refreshTokenExpiredAt
+    type: object
+  user.RefreshTokenRequest:
+    properties:
+      id:
+        description: Users ID
+        type: integer
+      refreshToken:
+        type: string
+    required:
+    - id
+    - refreshToken
+    type: object
+  user.RefreshTokenResponse:
+    properties:
+      accessToken:
+        description: JWT Token
+        type: string
+      accountNotVerified:
+        description: 帳號尚未認證
+        type: boolean
+      id:
+        description: Users ID
+        type: integer
+      login2FAType:
+        allOf:
+        - $ref: '#/definitions/users.TwoFAType'
+        description: |-
+          兩階段認證類型(Bitwise):
+          * 0: None
+          * 1: Email
+          * 2: SMS
+          * 4: Google Authenticator
+      onePassKey:
+        type: string
+      refreshToken:
+        type: string
+      refreshTokenExpiredAt:
+        type: string
+      verificationCode:
+        description: 驗證碼(Only in Debug Mode)
+        type: string
+    required:
+    - accessToken
+    - id
+    - login2FAType
+    - refreshToken
+    - refreshTokenExpiredAt
+    type: object
+  user.RegisterRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+      inviteCode:
+        type: string
+      password:
+        description: 密碼
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  user.RegisterResponse:
+    properties:
+      id:
+        description: Users ID
+        type: integer
+      verificationCode:
+        description: 驗證碼(Only in Debug Mode)
+        type: string
+    required:
+    - id
+    type: object
+  user.ResendEmailVerificationCodeRequest:
+    properties:
+      id:
+        description: Users ID
+        type: integer
+    required:
+    - id
+    type: object
+  user.ResetPasswordRequest:
+    properties:
+      password:
+        description: 密碼
+        type: string
+      token:
+        type: string
+    required:
+    - password
+    - token
+    type: object
+  user.TwoFactorLoginRequest:
+    properties:
+      id:
+        description: Users ID
+        type: integer
+      onePassKey:
+        type: string
+      verificationCode:
+        description: 驗證碼
+        type: string
+    required:
+    - id
+    - onePassKey
+    - verificationCode
+    type: object
+  user.TwoFactorLoginResponse:
+    properties:
+      accessToken:
+        description: JWT Token
+        type: string
+      refreshToken:
+        type: string
+      refreshTokenExpiredAt:
+        type: string
+    required:
+    - accessToken
+    - refreshToken
+    - refreshTokenExpiredAt
+    type: object
+  user.VerifyEmailRequest:
+    properties:
+      id:
+        description: Users ID
+        type: integer
+      verificationCode:
+        description: 驗證碼
+        type: string
+    required:
+    - id
+    - verificationCode
+    type: object
+  user.VerifyResetPasswordRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+      verificationCode:
+        description: 驗證碼
+        type: string
+    required:
+    - account
+    - verificationCode
+    type: object
+  user.VerifyResetPasswordResponse:
+    properties:
+      token:
+        type: string
+    required:
+    - token
+    type: object
+  users.CreateRequest:
+    properties:
+      account:
+        description: Email
+        type: string
+      address:
+        description: 營業地址
+        type: string
+      authorizedPersonName:
+        description: 被授權人姓名
+        type: string
+      authorizedPersonNationalID:
+        description: 被授權人身分證字號
+        type: string
+      authorizedPersonPhone:
+        description: 被授權人聯絡電話
+        type: string
+      birthDate:
+        description: 註冊登記日
+        format: date(YYYY/MM/DD)
+        type: string
+      comment:
+        description: 其他資訊（備註）
+        type: string
+      country:
+        description: 註冊地
+        type: string
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      juridicalPersonCryptocurrencySources:
+        description: 虛擬資產來源
+        type: string
+      juridicalPersonFundsSources:
+        description: 法幣資金來源
+        type: string
+      juridicalPersonNature:
+        description: 法人性質
+        type: string
+      name:
+        description: 名稱
+        type: string
+      nationalID:
+        description: 統一編號
+        type: string
+      phone:
+        description: 聯絡電話
+        type: string
+    required:
+    - account
+    - name
+    type: object
+  users.IDVStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - IDVStatusNone
+    - IDVStatusProcessing
+    - IDVStatusApproved
+    - IDVStatusRejected
+    - IDVStatusIDVRejected
+  users.InviteStatus:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - InviteStatusNotFinish
+    - InviteStatusFinished
+  users.Invitee:
+    properties:
+      account:
+        description: 帳號
+        type: string
+      createdAt:
+        description: 日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/users.InviteStatus'
+        description: |-
+          狀態
+          * 1: 未完成
+          * 2: 已完成
+    type: object
+  users.Status:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - SLStatusUnverified
+    - SLStatusEnable
+    - SLStatusDisable
+    - SLStatusForzen
+  users.TwoFAType:
+    enum:
+    - 1
+    - 2
+    - 4
+    type: integer
+    x-enum-varnames:
+    - TwoFATypeEmail
+    - TwoFATypeSMS
+    - TwoFATypeGoogleAuthenticator
+  users.Type:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - TypeNaturalPerson
+    - TypeJuridicalPerson
+  users.UpdateLevelRequest:
+    properties:
+      level:
+        description: '等級 (法人: 1~2, 自然人: 2~5)'
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - level
+    type: object
+  users.UpdateStatusRequest:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.SLStatus'
+        description: |-
+          狀態
+          * 0: 未啟用
+          * 1: 已啟用
+          * 2: 已停用
+          * 3: 凍結中
+        maximum: 3
+        minimum: 0
+    type: object
+  users.User:
+    properties:
+      account:
+        description: E-Mail
+        type: string
+      address:
+        description: 居住地址 or 聯繫地址
+        type: string
+      annualIncome:
+        description: 年收入
+        type: string
+      authorizedPersonName:
+        description: 被授權人姓名
+        type: string
+      authorizedPersonNationalID:
+        description: 被授權人身分證字號
+        type: string
+      authorizedPersonPhone:
+        description: 被授權人聯絡電話
+        type: string
+      birthDate:
+        description: 生日 or 註冊登記日
+        format: date(YYYY/MM/DD)
+        type: string
+      comment:
+        description: 備註
+        type: string
+      countriesCode:
+        description: 國家 or 註冊地
+        type: string
+      createdAt:
+        description: 註冊時間 or 建立日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      firstName:
+        description: 姓名 or 名稱(法人)
+        type: string
+      fundsSources:
+        description: 資金來源 or 法幣資金來源
+        type: string
+      id:
+        description: UID
+        type: integer
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      investmentExperience:
+        description: 投資經驗
+        type: string
+      juridicalPersonCryptocurrencySources:
+        description: 虛擬資產來源
+        type: string
+      juridicalPersonNature:
+        description: 法人性質
+        type: string
+      lastName:
+        description: 姓氏
+        type: string
+      level:
+        description: 會員等級
+        type: integer
+      nationalID:
+        description: 身分證字號 or 居留證號碼 or 統一編號
+        type: string
+      passportNumber:
+        description: 護照號碼
+        type: string
+      phone:
+        description: 手機
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/users.Status'
+        description: 狀態
+      type:
+        allOf:
+        - $ref: '#/definitions/users.Type'
+        description: 類型
+    type: object
+  users.UserInfo:
+    properties:
+      bankAccount:
+        description: 銀行帳戶 - 綁定帳號
+        type: string
+      bankAccountCreatedAt:
+        description: 銀行帳戶 - 提交時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      bankAccountStatus:
+        allOf:
+        - $ref: '#/definitions/bankaccounts.Status'
+        description: |-
+          銀行帳戶 - 綁定狀態
+          * 0: 未綁定
+          * 1: 審查中
+          * 2: 已通過
+          * 3: 未通過
+      banksCode:
+        description: 銀行帳戶 - 開戶銀行 (銀行代號)
+        type: string
+      branchsCode:
+        description: 銀行帳戶 - 開戶銀行 (分行代號)
+        type: string
+      googleAuthenticator:
+        description: Google Authenticator 狀態
+        type: boolean
+      idVerificationStatus:
+        allOf:
+        - $ref: '#/definitions/users.IDVStatus'
+        description: |-
+          身份認證審查狀態
+          * 0: 未認證
+          * 1: 認證進行中
+          * 2: 已通過認證
+          * 3: 未通過認證
+          * 4: 未通過認證(可重新進行)
+      inviteCode:
+        description: 好友邀請碼
+        type: string
+      lastChangePasswordAt:
+        description: 上次變更密碼時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      mobileBarcode:
+        description: 手機載具
+        type: string
+      totalInvited:
+        description: 總受邀人數
+        type: integer
+      totalSucceed:
+        description: 成功人數
+        type: integer
+    required:
+    - bankAccount
+    - bankAccountCreatedAt
+    - bankAccountStatus
+    - banksCode
+    - branchsCode
+    - googleAuthenticator
+    - idVerificationStatus
+    - inviteCode
+    - lastChangePasswordAt
+    - mobileBarcode
+    - totalInvited
+    - totalSucceed
+    type: object
+  users.UserWithAsset:
+    properties:
+      account:
+        description: E-Mail
+        type: string
+      address:
+        description: 居住地址 or 聯繫地址
+        type: string
+      annualIncome:
+        description: 年收入
+        type: string
+      assets:
+        items:
+          $ref: '#/definitions/userswallets.Asset'
+        type: array
+      authorizedPersonName:
+        description: 被授權人姓名
+        type: string
+      authorizedPersonNationalID:
+        description: 被授權人身分證字號
+        type: string
+      authorizedPersonPhone:
+        description: 被授權人聯絡電話
+        type: string
+      birthDate:
+        description: 生日 or 註冊登記日
+        format: date(YYYY/MM/DD)
+        type: string
+      comment:
+        description: 備註
+        type: string
+      countriesCode:
+        description: 國家 or 註冊地
+        type: string
+      createdAt:
+        description: 註冊時間 or 建立日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      dualNationalityCode:
+        description: 雙重國籍
+        type: string
+      firstName:
+        description: 姓名 or 名稱(法人)
+        type: string
+      fundsSources:
+        description: 資金來源 or 法幣資金來源
+        type: string
+      id:
+        description: UID
+        type: integer
+      industrialClassificationsID:
+        description: 行業別
+        type: integer
+      investmentExperience:
+        description: 投資經驗
+        type: string
+      juridicalPersonCryptocurrencySources:
+        description: 虛擬資產來源
+        type: string
+      juridicalPersonNature:
+        description: 法人性質
+        type: string
+      lastName:
+        description: 姓氏
+        type: string
+      level:
+        description: 會員等級
+        type: integer
+      mobileBarcode:
+        type: string
+      nationalID:
+        description: 身分證字號 or 居留證號碼 or 統一編號
+        type: string
+      passportNumber:
+        description: 護照號碼
+        type: string
+      phone:
+        description: 手機
+        type: string
+      purposeOfUse:
+        description: 使用目的
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/users.Status'
+        description: 狀態
+      type:
+        allOf:
+        - $ref: '#/definitions/users.Type'
+        description: 類型
+    type: object
+  userscommissions.Action:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - ActionDeposit
+    - ActionWithdraw
+  userscommissions.Commission:
+    properties:
+      account:
+        description: 帳號
+        type: string
+      action:
+        allOf:
+        - $ref: '#/definitions/userscommissions.Action'
+        description: |-
+          類型
+          * 1: 返佣
+          * 2: 提領
+      amount:
+        description: 數量 (USDT)
+        type: number
+      createdAt:
+        description: 日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+    type: object
+  userskycs.UpdateComplianceReviewRequest:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      result:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          狀態
+          * 2: 已通過
+          * 3: 已拒絕
+        enum:
+        - 2
+        - 3
+    required:
+    - result
+    type: object
+  userskycs.UpdateFinalReviewRequest:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      result:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          狀態
+          * 2: 已通過
+          * 3: 已拒絕
+          * 4: 身分驗證審核未通過
+        enum:
+        - 2
+        - 3
+        - 4
+    required:
+    - result
+    type: object
+  userskycs.UpdateIDVAuditStatusRequest:
+    properties:
+      auditStatus:
+        allOf:
+        - $ref: '#/definitions/idverifications.AuditStatus'
+        description: |-
+          認證結果
+          * 2: 通過
+          * 3: 不通過
+        maximum: 3
+        minimum: 2
+      comment:
+        description: 備註
+        type: string
+    type: object
+  userskycs.UpdateKryptoGOTaskIDRequest:
+    properties:
+      taskID:
+        description: KryptoGO 單號
+        type: string
+    required:
+    - taskID
+    type: object
+  userskycs.UpdateKryptoReviewRequest:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      result:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          狀態
+          * 2: 已通過
+          * 3: 已拒絕
+        enum:
+        - 2
+        - 3
+    required:
+    - result
+    type: object
+  usersloginlogs.Log:
+    properties:
+      browser:
+        type: string
+      createdAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      device:
+        type: string
+      ip:
+        type: string
+      location:
+        type: string
+      userAgent:
+        type: string
+    required:
+    - createdAt
+    - ip
+    - location
+    type: object
+  usersmodifylogs.BALStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - BALStatusUnknown
+    - BALStatusPending
+    - BALStatusAccepted
+    - BALStatusRejected
+  usersmodifylogs.BankAccountLog:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      createdAt:
+        description: 日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      managersName:
+        description: 操作者
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.BALStatus'
+        description: |-
+          狀態
+          * 0: 未綁定
+          * 1: 審核中
+          * 2: 已綁定
+          * 3: 未通過
+    type: object
+  usersmodifylogs.RLStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    type: integer
+    x-enum-varnames:
+    - RLStatusUnknown
+    - RLStatusPending
+    - RLStatusApproved
+    - RLStatusRejected
+    - RLStatusIDVRejected
+    - RLStatusToBeReview
+    - RLIDVStatusPending
+    - RLIDVStatusAccepted
+    - RLIDVStatusRejected
+  usersmodifylogs.RLType:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    type: integer
+    x-enum-varnames:
+    - RLTypeKryptoReview
+    - RLTypeNameCheckUploadPDF
+    - RLTypeInternalReview
+    - RLTypeComplianceReview
+    - RLTypeFinalReview
+    - RLTypeUploadResultImage
+    - RLTypeIDVStatus
+  usersmodifylogs.ReviewLog:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      createdAt:
+        description: 日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      managersName:
+        description: 管理者
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLStatus'
+        description: |-
+          狀態
+          * 0: 未知
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+          * 4: 身分驗證審核未通過
+          * 5: 待複核
+          * 6: 待審核
+          * 7: 通過
+          * 8: 未通過
+      type:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.RLType'
+        description: |-
+          類別
+          * 1: KryptoGO 複核
+          * 2: 姓名檢核排除評估
+          * 3: 內部風險審核
+          * 4: 法遵審查
+          * 5: 最終審查
+          * 6: 上傳認證結果(外籍人士)
+          * 7: 認證結果(外籍人士)
+    type: object
+  usersmodifylogs.SLStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - SLStatusUnverified
+    - SLStatusEnable
+    - SLStatusDisable
+    - SLStatusForzen
+  usersmodifylogs.StatusLog:
+    properties:
+      comment:
+        description: 備註
+        type: string
+      createdAt:
+        description: 日期
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      managersName:
+        description: 管理者
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/usersmodifylogs.SLStatus'
+        description: |-
+          狀態
+          * 0: 未啟用
+          * 1: 已啟用
+          * 2: 已停用
+          * 3: 凍結中
+    type: object
+  usersspottransfers.Action:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - ActionDeposit
+    - ActionWithdraw
+  usersspottransfers.SpotTransferForUser:
+    properties:
+      action:
+        allOf:
+        - $ref: '#/definitions/usersspottransfers.Action'
+        description: |-
+          類型
+          * 1: 接收
+          * 2: 發送
+      amount:
+        description: 數量
+        type: number
+      createdAt:
+        description: 交易時間
+        format: date(YYYY/MM/DD)
+        type: string
+      currenciesSymbol:
+        description: 幣種
+        type: string
+      handlingCharge:
+        description: 手續費
+        type: number
+      status:
+        allOf:
+        - $ref: '#/definitions/usersspottransfers.Status'
+        description: |-
+          狀態
+          * 1: 處理中
+          * 2: 已完成
+          * 3: 已失敗
+          * 4: 已取消
+          * 5: 審核中
+      transfersID:
+        description: 訂單編號
+        type: string
+      txID:
+        description: TXID
+        type: string
+    type: object
+  usersspottransfers.Status:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    type: integer
+    x-enum-varnames:
+    - StatusProcessing
+    - StatusFinished
+    - StatusFailed
+    - StatusCanceled
+    - StatusReviewing
+  usersspottransfers.Transfer:
+    properties:
+      action:
+        allOf:
+        - $ref: '#/definitions/usersspottransfers.Action'
+        description: |-
+          類型
+          * 1: 發送
+          * 2: 接收
+      amount:
+        description: 數量
+        type: number
+      createdAt:
+        description: 交易時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      currenciesSymbol:
+        description: 幣種
+        type: string
+      finishedAt:
+        description: 完成時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      handlingCharge:
+        description: 手續費
+        type: number
+      id:
+        description: 交易編號
+        type: string
+      mainnet:
+        description: 主網
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/usersspottransfers.Status'
+        description: |-
+          狀態
+          * 1: 處理中
+          * 2: 已完成
+          * 3: 已失敗
+          * 4: 已取消
+          * 5: 審核中
+      txID:
+        description: TXID
+        type: string
+      usersID:
+        description: UID
+        type: integer
+    type: object
+  userstransactions.Side:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - SideBuy
+    - SideSell
+  userstransactions.Status:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - StatusFilled
+    - StatusKilled
+  userstransactions.TransactionForManager:
+    properties:
+      amount:
+        description: 成交額
+        type: number
+      baseSymbol:
+        description: 基準貨幣（交易對左）
+        type: string
+      binanceAmount:
+        description: 幣安 - 成交額
+        type: number
+      binanceHandlingCharge:
+        description: 幣安 - 手續費
+        type: number
+      binanceID:
+        description: 幣安 - 訂單編號
+        type: integer
+      binancePrice:
+        description: 幣安 - 成交價格
+        type: number
+      binanceQuantity:
+        description: 幣安 - 成交數量
+        type: number
+      createdAt:
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      handlingCharge:
+        description: 手續費 (獲得的幣種)
+        type: number
+      invoiceAmount:
+        description: 發票金額 (TWD)
+        type: number
+      invoiceID:
+        description: 發票號碼
+        type: string
+      invoiceStatus:
+        allOf:
+        - $ref: '#/definitions/receipts.Status'
+        description: |-
+          發票狀態
+          * 0: 無發票
+          * 1: 未開立
+          * 2: 開立中
+          * 3: 已開立
+          * 4: 已失敗
+      price:
+        description: 價格
+        type: number
+      quantity:
+        description: 數量 (基準貨幣)
+        type: number
+      quoteSymbol:
+        description: 標價貨幣（交易對右）
+        type: string
+      side:
+        allOf:
+        - $ref: '#/definitions/userstransactions.Side'
+        description: |-
+          方向
+          * 1: 買
+          * 2: 賣
+      status:
+        allOf:
+        - $ref: '#/definitions/userstransactions.Status'
+        description: |-
+          狀態
+          * 0: 全部
+          * 1: 已完成(Fill)
+          * 2: 交易取消(Kill)
+      transactionsID:
+        description: 訂單編號
+        type: string
+      twdExchangeRate:
+        description: 手續費當時匯率 (獲得的幣種)
+        type: number
+      twdTotalValue:
+        description: 總價值
+        type: number
+      usersID:
+        description: UID
+        type: integer
+    type: object
+  userstransactions.TransactionForUser:
+    properties:
+      amount:
+        description: 成交額
+        type: number
+      baseSymbol:
+        description: 基準貨幣（交易對左）
+        type: string
+      createdAt:
+        description: 交易時間
+        format: dateTime(YYYY/MM/DD HH:mm:SS)
+        type: string
+      handlingCharge:
+        description: 手續費 (台幣)
+        type: number
+      price:
+        description: 價格
+        type: number
+      quantity:
+        description: 數量
+        type: number
+      quoteSymbol:
+        description: 標價貨幣（交易對右）
+        type: string
+      side:
+        allOf:
+        - $ref: '#/definitions/userstransactions.Side'
+        description: |-
+          方向
+          * 1: 買
+          * 2: 賣
+      status:
+        allOf:
+        - $ref: '#/definitions/userstransactions.Status'
+        description: |-
+          狀態
+          * 1: 已完成(Fill)
+          * 2: 交易取消(Kill)
+      transactionsID:
+        description: 訂單編號
+        type: string
+      twdExchangeRate:
+        description: 台幣匯率 (獲得的幣 -> 台幣)
+        type: number
+    type: object
+  userswallets.Asset:
+    properties:
+      currenciesSymbol:
+        type: string
+      freeAmount:
+        type: number
+    type: object
+  userswithdrawalwhitelist.Extra:
+    properties:
+      memo:
+        description: 備註
+        type: string
+    type: object
+  userswithdrawalwhitelist.Record:
+    properties:
+      address:
+        description: 地址
+        type: string
+      extra:
+        $ref: '#/definitions/userswithdrawalwhitelist.Extra'
+      id:
+        type: integer
+      mainnet:
+        description: 主網
+        type: string
+    type: object
+  wallet.CurrencyType:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    type: integer
+    x-enum-varnames:
+    - CurrencyTypeBTC
+    - CurrencyTypeETH
+    - CurrencyTypeUSDC
+    - CurrencyTypeUSDT
+    - CurrencyTypeTRX
+  wallet.Mainnet:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - MainnetBTC
+    - MainnetETH
+    - MainnetERC20
+    - MainnetTRC20
+  wallets.CreateWithdrawalWhitelistRequest:
+    properties:
+      address:
+        description: 地址
+        type: string
+      extra:
+        allOf:
+        - $ref: '#/definitions/userswithdrawalwhitelist.Extra'
+        description: 其他資訊
+      mainnet:
+        allOf:
+        - $ref: '#/definitions/wallet.Mainnet'
+        description: |-
+          主網
+          * 1: BTC
+          * 2: ETH
+          * 3: ERC20
+          * 4: TRC20
+        maximum: 4
+        minimum: 1
+    required:
+    - address
+    - mainnet
+    type: object
+  wallets.GetCoinInfoResponse:
+    properties:
+      accWithdrawInDay:
+        description: 今日累計發送
+        type: number
+      accWithdrawInMonth:
+        description: 本月累計發送
+        type: number
+      levelLimit:
+        allOf:
+        - $ref: '#/definitions/levellimits.LimitByAction'
+        description: 等級限制
+      name:
+        type: string
+      network:
+        type: string
+      withdrawFee:
+        type: string
+      withdrawMax:
+        type: string
+      withdrawMin:
+        type: string
+    type: object
+  wallets.GetDepositAddressRequest:
+    properties:
+      currencyType:
+        allOf:
+        - $ref: '#/definitions/wallet.CurrencyType'
+        description: |-
+          Currency Type
+          * 1: BTC
+          * 2: ETH
+          * 3: USDC
+          * 4: USDT
+        maximum: 4
+        minimum: 1
+      mainnet:
+        allOf:
+        - $ref: '#/definitions/wallet.Mainnet'
+        description: |-
+          Mainnet
+          * 1: BTC
+          * 2: ETC
+          * 3: ERC20
+          * 4: TRC20
+        maximum: 4
+        minimum: 1
+    required:
+    - currencyType
+    - mainnet
+    type: object
+  wallets.GetDepositAddressResponse:
+    properties:
+      address:
+        type: string
+      qrCodeData:
+        type: string
+    type: object
+  wallets.Withdraw2FARequest:
+    properties:
+      emailVerificationCode:
+        type: string
+      gaVerificationCode:
+        type: string
+      onePassKey:
+        type: string
+      smsVerificationCode:
+        type: string
+    required:
+    - onePassKey
+    type: object
+  wallets.WithdrawRequest:
+    properties:
+      amount:
+        type: number
+      currencyType:
+        allOf:
+        - $ref: '#/definitions/wallet.CurrencyType'
+        description: |-
+          Currency Type
+          * 1: BTC
+          * 2: ETH
+          * 3: USDC
+          * 4: USDT
+        maximum: 4
+        minimum: 1
+      mainnet:
+        allOf:
+        - $ref: '#/definitions/wallet.Mainnet'
+        description: |-
+          Mainnet
+          * 1: BTC
+          * 2: ETC
+          * 3: ERC20
+          * 4: TRC20
+        maximum: 4
+        minimum: 1
+      whitelistID:
+        type: integer
+    required:
+    - amount
+    - currencyType
+    - mainnet
+    - whitelistID
+    type: object
+  wallets.WithdrawResponse:
+    properties:
+      emailVerificationCode:
+        description: 驗證碼(Only in Debug Mode)
+        type: string
+      onePassKey:
+        type: string
+      smsVerificationCode:
+        description: 驗證碼(Only in Debug Mode)
+        type: string
+      twoFAType:
+        allOf:
+        - $ref: '#/definitions/users.TwoFAType'
+        description: |-
+          兩階段認證類型(Bitwise):
+          * 0: None
+          * 1: Email
+          * 2: SMS
+          * 4: Google Authenticator
+    type: object
+externalDocs:
+  description: BitYacht Exchange API External Doc
+  url: https://hackmd.io/@9iHsj5PNTbKIqyrL54-ffQ/B1-ktNCqh
+host: localhost:9000
+info:
+  contact: {}
+  description: This is a RESTful API documentation of BitYacht Exchange Backend.
+  title: BitYacht Exchange API Doc
+  version: 0.1.0
+paths:
+  /admin/auth:
+    get:
+      description: Jwt token檢查
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: Jwt token檢查
+      tags:
+      - Admin
+  /admin/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: 忘記密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 忘記密碼
+      tags:
+      - Admin
+  /admin/kycs:
+    get:
+      description: 取得審查列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - description: |-
+          法遵審查
+          * 0: 全部
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        in: query
+        maximum: 3
+        minimum: 0
+        name: complianceReview
+        type: integer
+        x-enum-varnames:
+        - RLStatusUnknown
+        - RLStatusPending
+        - RLStatusApproved
+        - RLStatusRejected
+        - RLStatusIDVRejected
+        - RLStatusToBeReview
+        - RLIDVStatusPending
+        - RLIDVStatusAccepted
+        - RLIDVStatusRejected
+      - description: 送審日期(結束)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: |-
+          最終審核
+          * 0: 全部
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+          * 4: 身分驗證審核未通過
+          * 5: 待複核
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        in: query
+        maximum: 5
+        minimum: 0
+        name: finalReview
+        type: integer
+        x-enum-varnames:
+        - RLStatusUnknown
+        - RLStatusPending
+        - RLStatusApproved
+        - RLStatusRejected
+        - RLStatusIDVRejected
+        - RLStatusToBeReview
+        - RLIDVStatusPending
+        - RLIDVStatusAccepted
+        - RLIDVStatusRejected
+      - description: 送審日期(開始)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/duediligences.Review'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得審查列表
+      tags:
+      - Admin-kycs
+  /admin/kycs/annual:
+    get:
+      description: 取得年度審查列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - description: |-
+          * 0: 全部
+          * 1: 待審核
+          * 2: 已通過
+          * 3: 已拒絕
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        in: query
+        maximum: 3
+        minimum: 0
+        name: complianceReview
+        type: integer
+        x-enum-varnames:
+        - RLStatusUnknown
+        - RLStatusPending
+        - RLStatusApproved
+        - RLStatusRejected
+        - RLStatusIDVRejected
+        - RLStatusToBeReview
+        - RLIDVStatusPending
+        - RLIDVStatusAccepted
+        - RLIDVStatusRejected
+      - description: 送審日期(結束)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 送審日期(開始)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/duediligences.Review'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得年度審查列表
+      tags:
+      - Admin-kycs
+  /admin/kycs/annual/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出年度審查列表
+      parameters:
+      - description: 送審日期(結束)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 送審日期(開始)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出年度審查列表
+      tags:
+      - Admin-kycs
+  /admin/kycs/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出審查列表
+      parameters:
+      - description: 送審日期(結束)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 送審日期(開始)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - collectionFormat: multi
+        description: 審核結果
+        in: query
+        items:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          type: integer
+        name: statusList
+        type: array
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出審查列表
+      tags:
+      - Admin-kycs
+  /admin/kycs/risks:
+    get:
+      description: 取得所有風險設定
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/risks.Risk'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得所有風險設定
+      tags:
+      - Admin-kycs
+    post:
+      consumes:
+      - application/json
+      description: 新增一個風險設定
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/risks.CreateRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 新增一個風險設定
+      tags:
+      - Admin-kycs
+  /admin/kycs/risks/{id}:
+    delete:
+      description: 刪除一個風險設定, 會同時刪除所有關聯的風險設定
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 刪除一個風險設定
+      tags:
+      - Admin-kycs
+    patch:
+      consumes:
+      - application/json
+      description: 修改一個風險設定
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/risks.UpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 修改一個風險設定
+      tags:
+      - Admin-kycs
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Admin 登入
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/admin.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: Admin 登入
+      tags:
+      - Admin
+  /admin/logout:
+    post:
+      description: Admin 登出
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: Admin 登出
+      tags:
+      - Admin
+  /admin/password:
+    patch:
+      consumes:
+      - application/json
+      description: 更新密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.UpdatePasswordRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新密碼
+      tags:
+      - Admin
+  /admin/receipts:
+    get:
+      description: 取得所有發票列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: "發票狀態\n\t* 0: 全部\n\t* 1: 未開立\n\t* 2: 開立中\n\t* 3: 已開立\n\t* 4:
+          已失敗"
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        maximum: 4
+        minimum: 0
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusUnknown
+        - StatusPending
+        - StatusIssuing
+        - StatusIssued
+        - StatusFailed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/receipts.ListItem'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 取得所有發票列表
+      tags:
+      - Admin-Receipt
+  /admin/receipts/:ID:
+    get:
+      description: 取得發票詳細資料
+      parameters:
+      - description: Receipt ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/receipts.DetailItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 取得發票詳細資料
+      tags:
+      - Admin-Receipt
+  /admin/receipts/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出發票列表 (CSV)
+      parameters:
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        required: true
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        required: true
+        type: string
+      - collectionFormat: multi
+        description: "Status: 發票狀態\n\t* 1: 未開立\n\t* 2: 開立中\n\t* 3: 已開立\n\t* 4: 已失敗"
+        in: query
+        items:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          type: integer
+        name: statuses
+        type: array
+        uniqueItems: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 匯出發票列表 (CSV)
+      tags:
+      - Admin-Receipt
+  /admin/receipts/issue:
+    post:
+      consumes:
+      - application/json
+      description: 發票開立
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/receipts.IssueRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 發票開立
+      tags:
+      - Admin-Receipt
+  /admin/settings/banners:
+    get:
+      description: 取得橫幅資料列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: banners status, all = -1
+        in: query
+        name: status
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/bityacht-exchange-api-server_internal_database_sql_banners.Banner'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得橫幅資料列表
+      tags:
+      - Admin-settings
+    post:
+      consumes:
+      - multipart/form-data
+      description: 建立橫幅資料
+      parameters:
+      - description: webImage
+        in: formData
+        name: webImage
+        type: file
+      - description: appImage
+        in: formData
+        name: appImage
+        type: file
+      - in: formData
+        name: button
+        type: string
+      - in: formData
+        name: buttonUrl
+        type: string
+      - format: dateTime(YYYY/MM/DD HH:mm:SS)
+        in: formData
+        name: endAt
+        type: string
+      - format: dateTime(YYYY/MM/DD HH:mm:SS)
+        in: formData
+        name: startAt
+        type: string
+      - enum:
+        - 0
+        - 1
+        in: formData
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusDisable
+        - StatusEnable
+      - in: formData
+        name: subTitle
+        type: string
+      - in: formData
+        name: title
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 建立橫幅資料
+      tags:
+      - Admin-settings
+  /admin/settings/banners/{id}:
+    delete:
+      description: 刪除橫幅資料
+      parameters:
+      - description: banners id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 刪除橫幅資料
+      tags:
+      - Admin-settings
+    patch:
+      description: 編輯橫幅資料
+      parameters:
+      - description: banners id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: webImage
+        in: formData
+        name: webImage
+        type: file
+      - description: appImage
+        in: formData
+        name: appImage
+        type: file
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/banners.UpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 編輯橫幅資料
+      tags:
+      - Admin-settings
+  /admin/settings/banners/priority:
+    post:
+      consumes:
+      - application/json
+      description: 更新橫幅資料優先度
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/banners.PriorityUpdateRequset'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新橫幅資料優先度
+      tags:
+      - Admin-settings
+  /admin/settings/mainnets:
+    get:
+      consumes:
+      - application/json
+      description: 取得主網列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/mainnets.Mainnet'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 取得主網列表
+      tags:
+      - Admin-settings
+  /admin/settings/mainnets/{currency}/{mainnet}:
+    patch:
+      consumes:
+      - application/json
+      description: 編輯主網
+      parameters:
+      - description: 幣種
+        in: path
+        name: currency
+        required: true
+        type: integer
+      - description: 主網
+        in: path
+        name: mainnet
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/mainnets.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 編輯主網
+      tags:
+      - Admin-settings
+  /admin/settings/managers:
+    get:
+      description: 取得管理員列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/managers.Manager'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得管理員列表
+      tags:
+      - Admin-settings
+    post:
+      consumes:
+      - application/json
+      description: 建立管理員帳號
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/managers.CreateRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 建立管理員帳號
+      tags:
+      - Admin-settings
+  /admin/settings/managers/{id}:
+    delete:
+      description: 刪除管理員
+      parameters:
+      - description: managers id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 刪除管理員
+      tags:
+      - Admin-settings
+    patch:
+      description: 編輯管理員
+      parameters:
+      - description: managers id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body, only admin can modify other manager's account.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/managers.UpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 編輯管理員
+      tags:
+      - Admin-settings
+  /admin/settings/transactionpairs:
+    get:
+      description: 取得交易對列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/transactionpairs.TransactionPair'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得交易對列表
+      tags:
+      - Admin-settings
+    patch:
+      description: 編輯交易對
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/transactionpairs.UpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 編輯交易對
+      tags:
+      - Admin-settings
+  /admin/spots:
+    get:
+      description: 取得提入幣列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - description: 幣種
+        in: query
+        name: coin
+        type: string
+      - description: 交易時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 交易時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: |-
+          * 0: 全部
+          * 1: 處理中
+          * 2: 已完成
+          * 3: 已失敗
+          * 4: 已取消
+          * 5: 審核中
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        in: query
+        maximum: 5
+        minimum: 0
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusProcessing
+        - StatusFinished
+        - StatusFailed
+        - StatusCanceled
+        - StatusReviewing
+      - description: UID
+        in: query
+        name: usersID
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersspottransfers.Transfer'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得提入幣列表
+      tags:
+      - Admin-spots
+  /admin/spots/aegis-export:
+    get:
+      consumes:
+      - application/json
+      description: Aegis 匯出
+      parameters:
+      - description: 交易時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: |-
+          主網
+          * 1: BTC
+          * 2: ETH
+          * 3: ERC20
+          * 4: TRC20
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        maximum: 4
+        minimum: 1
+        name: mainnet
+        required: true
+        type: integer
+        x-enum-varnames:
+        - MainnetBTC
+        - MainnetETH
+        - MainnetERC20
+        - MainnetTRC20
+      - description: 交易時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: Aegis 匯出
+      tags:
+      - Admin-spots
+  /admin/spots/aegis-import:
+    get:
+      consumes:
+      - multipart/form-data
+      description: Aegis匯入
+      parameters:
+      - description: bityachImport.csv
+        in: formData
+        name: csv
+        type: file
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: Aegis匯入
+      tags:
+      - Admin-spots
+  /admin/spots/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出提入幣列表
+      parameters:
+      - description: 交易時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 交易時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - collectionFormat: multi
+        description: 狀態
+        in: query
+        items:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+        name: statusList
+        type: array
+      - description: UID
+        in: query
+        name: usersID
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出提入幣列表
+      tags:
+      - Admin-spots
+  /admin/suspicious-txs:
+    get:
+      description: 取得可疑交易列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - description: |-
+          狀態
+          * 0: 全部
+          * 1: 待審核
+          * 2: 通過
+          * 3: 駁回
+        in: query
+        maximum: 3
+        minimum: 0
+        name: dedicatedReviewResult
+        type: integer
+      - description: 掃描時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 掃描時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: |-
+          可疑樣態
+          * 0: 全部
+          * 1: 多筆提領態樣
+          * 2: 多筆同額態樣
+          * 3: 同一出金地址態樣
+          * 4: 迅速轉出態樣
+          * 5: 迅速買賣態樣
+          * 6: 小額接收大額轉出態樣
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        in: query
+        maximum: 6
+        minimum: 0
+        name: type
+        type: integer
+        x-enum-varnames:
+        - TypeMultipleWithdrawal
+        - TypeMultipleSameAmount
+        - TypeMultipleSameWithdrawalAddress
+        - TypeQuicklyWithdraw
+        - TypeQuicklyTrade
+        - TypeSmallInBigOut
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/suspicioustransactions.SuspiciousTX'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得可疑交易列表
+      tags:
+      - Admin-SuspiciousTxs
+  /admin/suspicious-txs/:id:
+    get:
+      description: 取得可疑交易詳細資訊
+      parameters:
+      - description: Suspicious Transactions ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/suspicioustransactions.SuspiciousTXDetail'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得可疑交易詳細資訊
+      tags:
+      - Admin-SuspiciousTxs
+    patch:
+      description: 更新可疑交易資訊
+      parameters:
+      - description: Suspicious Transactions ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/suspicioustransactions.UpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新可疑交易資訊
+      tags:
+      - Admin-SuspiciousTxs
+  /admin/suspicious-txs/:id/file:
+    delete:
+      description: 刪除可疑交易相關檔案
+      parameters:
+      - description: Suspicious Transactions ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: |-
+          檔案類型
+          * 1: 資訊審核
+          * 2: 風控審查
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 1
+        name: fileType
+        required: true
+        type: integer
+        x-enum-varnames:
+        - UpdateFilesTypeInformationReview
+        - UpdateFilesTypeRiskReview
+      - description: 檔案名稱
+        in: query
+        name: filename
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 刪除可疑交易相關檔案
+      tags:
+      - Admin-SuspiciousTxs
+    get:
+      description: 下載可疑交易相關檔案
+      parameters:
+      - description: Suspicious Transactions ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: |-
+          檔案類型
+          * 1: 資訊審核
+          * 2: 風控審查
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 1
+        name: fileType
+        required: true
+        type: integer
+        x-enum-varnames:
+        - UpdateFilesTypeInformationReview
+        - UpdateFilesTypeRiskReview
+      - description: 檔案名稱
+        in: query
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 下載可疑交易相關檔案
+      tags:
+      - Admin-SuspiciousTxs
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上傳可疑交易相關檔案
+      parameters:
+      - description: Suspicious Transactions ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: file
+        in: formData
+        name: file
+        type: file
+      - description: |-
+          上傳類型
+          * 1: 資訊審核
+          * 2: 風控審查
+        enum:
+        - 1
+        - 2
+        in: formData
+        maximum: 2
+        minimum: 1
+        name: uploadType
+        required: true
+        type: integer
+        x-enum-varnames:
+        - UpdateFilesTypeInformationReview
+        - UpdateFilesTypeRiskReview
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 上傳可疑交易相關檔案
+      tags:
+      - Admin-SuspiciousTxs
+  /admin/suspicious-txs/export-csv:
+    get:
+      consumes:
+      - application/json
+      description: 匯出可疑交易列表
+      parameters:
+      - collectionFormat: multi
+        description: |-
+          狀態 (Empty = All)
+          * 1: 待審核
+          * 2: 通過
+          * 3: 駁回
+        in: query
+        items:
+          type: integer
+        name: dedicatedReviewResults
+        type: array
+      - description: 掃描時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 掃描時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - collectionFormat: multi
+        description: |-
+          可疑樣態 (Empty = All)
+          * 1: 多筆提領態樣
+          * 2: 多筆同額態樣
+          * 3: 同一出金地址態樣
+          * 4: 迅速轉出態樣
+          * 5: 迅速買賣態樣
+          * 6: 小額接收大額轉出態樣
+        in: query
+        items:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          type: integer
+        name: types
+        type: array
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 匯出可疑交易列表
+      tags:
+      - Admin-SuspiciousTxs
+  /admin/transactions:
+    get:
+      description: 取得交易訂單列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: |-
+          * 0: All
+          * 1: Buy
+          * 2: Sell
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 0
+        name: side
+        type: integer
+        x-enum-varnames:
+        - SideBuy
+        - SideSell
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: |-
+          * 0: All
+          * 1: Filled
+          * 2: Killed
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 0
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusFilled
+        - StatusKilled
+      - description: 0 for all
+        in: query
+        name: usersID
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/userstransactions.TransactionForManager'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得交易訂單列表
+      tags:
+      - Admin-transactions
+  /admin/transactions/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出交易訂單列表
+      parameters:
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - collectionFormat: multi
+        in: query
+        items:
+          enum:
+          - 1
+          - 2
+          type: integer
+        name: statusList
+        type: array
+      - in: query
+        name: usersID
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出交易訂單列表
+      tags:
+      - Admin-transactions
+  /admin/users:
+    get:
+      description: 取得用戶列表
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: 'Default: '''''
+        in: query
+        name: search
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - in: query
+        maximum: 5
+        minimum: 0
+        name: status
+        type: integer
+      - enum:
+        - 1
+        - 2
+        in: query
+        name: type
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/users.User'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得用戶列表
+      tags:
+      - Admin-users
+    post:
+      consumes:
+      - application/json
+      description: 建立法人帳號
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/users.CreateRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 建立法人帳號
+      tags:
+      - Admin-users
+  /admin/users/{id}:
+    get:
+      description: 用戶資料帶資產列表
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserWithAsset'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 用戶資料帶資產列表
+      tags:
+      - Admin-users
+  /admin/users/{id}/bank:
+    get:
+      description: 取得銀行帳戶資訊
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bank.GetResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得銀行帳戶資訊
+      tags:
+      - Admin-users
+    patch:
+      consumes:
+      - application/json
+      description: 更新銀行帳戶資訊
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/bank.PatchRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新銀行帳戶資訊
+      tags:
+      - Admin-users
+  /admin/users/{id}/bank/logs:
+    get:
+      description: 取得用戶銀行帳戶審核狀態異動紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersmodifylogs.BankAccountLog'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得用戶銀行帳戶審核狀態異動紀錄
+      tags:
+      - Admin-users
+  /admin/users/{id}/bank/logs/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出用戶銀行帳戶審核狀態異動紀錄
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出用戶銀行帳戶審核狀態異動紀錄
+      tags:
+      - Admin-users
+  /admin/users/{id}/invite:
+    get:
+      description: 取得邀請清單
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/users.Invitee'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得邀請清單
+      tags:
+      - Admin-users
+  /admin/users/{id}/invite-info:
+    get:
+      description: 取得邀請獎勵資訊
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invite.GetInfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得邀請獎勵資訊
+      tags:
+      - Admin-users
+  /admin/users/{id}/invite-rewards:
+    get:
+      description: 取得獎勵清單
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: |-
+          類型
+          * 0: 全部
+          * 1: 返佣
+          * 2: 提領
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 3
+        minimum: 0
+        name: action
+        type: integer
+        x-enum-varnames:
+        - ActionDeposit
+        - ActionWithdraw
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/userscommissions.Commission'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得獎勵清單
+      tags:
+      - Admin-users
+  /admin/users/{id}/invite-rewards/export:
+    get:
+      description: 匯出獎勵清單
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: |-
+          類型
+          * 0: 全部
+          * 1: 返佣
+          * 2: 提領
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 3
+        minimum: 0
+        name: action
+        type: integer
+        x-enum-varnames:
+        - ActionDeposit
+        - ActionWithdraw
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出獎勵清單
+      tags:
+      - Admin-users
+  /admin/users/{id}/kycs:
+    get:
+      description: 取得使用者帶審查資料
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/duediligences.UserWithDD'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得使用者帶審查資料
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/compliance-review:
+    patch:
+      description: 更新用戶法遵審查結果
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userskycs.UpdateComplianceReviewRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶法遵審查結果
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/final-review:
+    patch:
+      description: 更新用戶最終審查結果
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userskycs.UpdateFinalReviewRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶最終審查結果
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/idv-audit-status:
+    patch:
+      consumes:
+      - application/json
+      description: 更新認證結果(外籍人士)
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userskycs.UpdateIDVAuditStatusRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新認證結果(外籍人士)
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/krypto-review:
+    patch:
+      description: 更新用戶KryptoGo審查結果
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userskycs.UpdateKryptoReviewRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶KryptoGo審查結果
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/name-check:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: 更新用戶姓名檢核排除評估
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: name check pdf
+        in: formData
+        name: file
+        type: file
+      - description: |-
+          狀態
+          * 2: 已通過
+          * 3: 已拒絕
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        in: formData
+        name: result
+        required: true
+        type: integer
+        x-enum-varnames:
+        - RLStatusUnknown
+        - RLStatusPending
+        - RLStatusApproved
+        - RLStatusRejected
+        - RLStatusIDVRejected
+        - RLStatusToBeReview
+        - RLIDVStatusPending
+        - RLIDVStatusAccepted
+        - RLIDVStatusRejected
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶姓名檢核排除評估
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/name-check/pdf:
+    get:
+      description: 取得用戶姓名檢核PDF檔案
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得用戶姓名檢核PDF檔案
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/resent-krypto:
+    post:
+      description: 重送用戶KryptoGo審查
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 重送用戶KryptoGo審查
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/reviewslogs:
+    get:
+      description: 取得該用戶審核狀態異動紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersmodifylogs.ReviewLog'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得該用戶審核狀態異動紀錄
+      tags:
+      - Admin-reviews-logs
+  /admin/users/{id}/kycs/reviewslogs/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出用戶資料狀態異動紀錄
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出用戶資料狀態異動紀錄
+      tags:
+      - Admin-reviews-logs
+  /admin/users/{id}/kycs/risks:
+    get:
+      description: 取得該使用者所有風險索引
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得該使用者所有風險索引
+      tags:
+      - Admin-kycs
+    post:
+      description: 更新該使用者所有風險索引, 會先刪除所有風險索引, 再新增
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/risks.UpdateRisksRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新該使用者所有風險索引
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/kycs/task-id:
+    patch:
+      description: 編輯 KryptoGO 單號
+      parameters:
+      - description: users id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/userskycs.UpdateKryptoGOTaskIDRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 編輯 KryptoGO 單號
+      tags:
+      - Admin-kycs
+  /admin/users/{id}/level:
+    patch:
+      description: 更新用戶資料等級
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdateLevelRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶資料等級
+      tags:
+      - Admin-users
+  /admin/users/{id}/login-logs:
+    get:
+      description: 取得該用戶登入紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersloginlogs.Log'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得該用戶登入紀錄
+      tags:
+      - Admin-login-logs
+  /admin/users/{id}/login-logs/export:
+    get:
+      description: 匯出該用戶登入紀錄
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出該用戶登入紀錄
+      tags:
+      - Admin-login-logs
+  /admin/users/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: 更新用戶資料狀態
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdateStatusRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新用戶資料狀態
+      tags:
+      - Admin-users
+  /admin/users/{id}/statuslogs:
+    get:
+      description: 取得該用戶資料狀態異動紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersmodifylogs.StatusLog'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得該用戶資料狀態異動紀錄
+      tags:
+      - Admin-status-logs
+  /admin/users/{id}/statuslogs/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出用戶資料狀態異動紀錄
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出用戶資料狀態異動紀錄
+      tags:
+      - Admin-status-logs
+  /admin/users/{id}/withdrawal-whitelist:
+    get:
+      description: 取得用戶提幣白名單
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/userswithdrawalwhitelist.Record'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得用戶提幣白名單
+      tags:
+      - Admin-users
+  /admin/users/{id}/withdrawal-whitelist/{whitelistID}:
+    delete:
+      description: 刪除用戶提幣白名單
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: withdrawal whitelist id
+        in: path
+        name: whitelistID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 刪除用戶提幣白名單
+      tags:
+      - Admin-users
+  /admin/users/{id}/withdrawal-whitelist/export:
+    get:
+      description: 匯出用戶提幣白名單
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出用戶提幣白名單
+      tags:
+      - Admin-users
+  /admin/users/export:
+    get:
+      consumes:
+      - application/json
+      description: 匯出用戶列表
+      parameters:
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - collectionFormat: multi
+        in: query
+        items:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          type: integer
+        name: statusList
+        type: array
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 匯出用戶列表
+      tags:
+      - Admin-users
+  /admin/users/options:
+    get:
+      description: 取得使用者相關選項
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sqlcache.IDVOptionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得使用者相關選項
+      tags:
+      - Admin-users
+  /assets/banners/{filename}:
+    get:
+      description: 取得 Banner 圖片
+      parameters:
+      - description: banners filename
+        in: path
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: 取得 Banner 圖片
+      tags:
+      - Assets
+  /user/2fa-login:
+    post:
+      consumes:
+      - application/json
+      description: 會員兩階段登入
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.TwoFactorLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.TwoFactorLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 會員兩階段登入
+      tags:
+      - User-Auth
+  /user/assets:
+    get:
+      description: 取得我的資產
+      parameters:
+      - description: 'Default: false'
+        in: query
+        name: disableHistories
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/assets.GetResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得我的資產
+      tags:
+      - User-Assets
+  /user/assets/spot/histories:
+    get:
+      description: 取得錢包歷史紀錄(加密貨幣)
+      parameters:
+      - description: |-
+          類型
+          * 0: 全部
+          * 1: 發送
+          * 2: 接收
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 0
+        name: action
+        type: integer
+        x-enum-varnames:
+        - ActionDeposit
+        - ActionWithdraw
+      - description: 幣種
+        in: query
+        name: currenciesSymbol
+        type: string
+      - description: 交易時間（結束）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: 交易時間（開始）
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: |-
+          狀態
+          * 0: 全部
+          * 1: 處理中
+          * 2: 已完成
+          * 3: 已失敗
+          * 4: 已取消
+          * 5: 審核中
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        in: query
+        maximum: 5
+        minimum: 0
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusProcessing
+        - StatusFinished
+        - StatusFailed
+        - StatusCanceled
+        - StatusReviewing
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersspottransfers.SpotTransferForUser'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得錢包歷史紀錄(加密貨幣)
+      tags:
+      - User-Assets
+  /user/assets/spot/options:
+    get:
+      description: 取得現貨相關選項
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sqlcache.SpotOptionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得現貨相關選項
+      tags:
+      - User-Assets
+  /user/assets/spot/transactions:
+    get:
+      description: 取得現貨交易紀錄
+      parameters:
+      - description: 交易時間(結束)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: endAt
+        type: string
+      - description: |-
+          方向
+          * 0: 全部
+          * 1: 買
+          * 2: 賣
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 0
+        name: side
+        type: integer
+        x-enum-varnames:
+        - SideBuy
+        - SideSell
+      - description: 交易時間(開始)
+        format: date(YYYY/MM/DD)
+        in: query
+        name: startAt
+        type: string
+      - description: |-
+          狀態
+          * 0: 全部
+          * 1: 已完成(Fill)
+          * 2: 交易取消(Kill)
+        enum:
+        - 1
+        - 2
+        in: query
+        maximum: 2
+        minimum: 0
+        name: status
+        type: integer
+        x-enum-varnames:
+        - StatusFilled
+        - StatusKilled
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/userstransactions.TransactionForUser'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得現貨交易紀錄
+      tags:
+      - User-Assets
+    post:
+      consumes:
+      - application/json
+      description: 現貨買賣
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/spot.CreateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userstransactions.TransactionForUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 現貨買賣
+      tags:
+      - User-Assets
+  /user/assets/spot/trend:
+    get:
+      description: 取得現貨買賣價格資訊
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/spottrend.SpotTrend'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得現貨買賣價格資訊
+      tags:
+      - User-Assets
+  /user/banks/account:
+    delete:
+      description: 刪除銀行帳戶
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 刪除銀行帳戶
+      tags:
+      - User-MemberCenter
+    put:
+      description: 更新銀行帳戶
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/banks.UpsertAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新銀行帳戶
+      tags:
+      - User-MemberCenter
+  /user/banks/options:
+    get:
+      description: 取得銀行&分行選項
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sqlcache.BankOptionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得銀行&分行選項
+      tags:
+      - User-MemberCenter
+  /user/banners:
+    get:
+      description: 取得 Banner 列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/bityacht-exchange-api-server_internal_cache_memory_banners.Banner'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 取得 Banner 列表
+      tags:
+      - User-Index
+  /user/commissions:
+    get:
+      description: 取得返佣與提領紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commissions.GetCommissionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得返佣與提領紀錄
+      tags:
+      - User-MemberCenter
+  /user/commissions/withdraw:
+    post:
+      description: 提領返佣
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 提領返佣
+      tags:
+      - User-MemberCenter
+  /user/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: 忘記密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.ForgotPasswordRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 忘記密碼
+      tags:
+      - User-Auth
+  /user/idv:
+    post:
+      consumes:
+      - application/json
+      description: 申請身份認證
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/idv.CreateIDVerificationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/idv.CreateIDVerificationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 申請身份認證
+      tags:
+      - User-MemberCenter
+  /user/idv/check-phone:
+    post:
+      consumes:
+      - application/json
+      description: 確認手機是否已被使用
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/idv.CheckPhoneRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 確認手機是否已被使用
+      tags:
+      - User-MemberCenter
+  /user/idv/image:
+    patch:
+      consumes:
+      - application/json
+      description: 更新 IDV 相片 (僅限外國人)
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/idv.UpdateIDVImageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新 IDV 相片 (僅限外國人)
+      tags:
+      - User-MemberCenter
+  /user/idv/issue-phone-verify:
+    post:
+      consumes:
+      - application/json
+      description: 身份認證 - 發送手機驗證碼 & 檢查身份認證表單
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/idv.IssuePhoneVerificationCodeRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 身份認證 - 發送手機驗證碼 & 檢查身份認證表單
+      tags:
+      - User-MemberCenter
+  /user/idv/krypto-go-url:
+    get:
+      consumes:
+      - application/json
+      description: 取得 KryptoGO IDV URL (僅限本國人)
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/idv.CreateIDVerificationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得 KryptoGO IDV URL (僅限本國人)
+      tags:
+      - User-MemberCenter
+  /user/idv/options:
+    get:
+      description: 取得身份認證選項
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sqlcache.IDVOptionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得身份認證選項
+      tags:
+      - User-MemberCenter
+  /user/idv/verify-phone:
+    post:
+      consumes:
+      - application/json
+      description: 身份認證 - 驗證手機
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/idv.VerifyPhoneRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/idv.VerifyPhoneResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 身份認證 - 驗證手機
+      tags:
+      - User-MemberCenter
+  /user/info:
+    get:
+      description: 取得會員資訊
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得會員資訊
+      tags:
+      - User-MemberCenter
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: 會員登入
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 會員登入
+      tags:
+      - User-Auth
+  /user/login-logs:
+    get:
+      description: 取得會員登入紀錄
+      parameters:
+      - description: 'Default: 1'
+        in: query
+        name: page
+        type: integer
+      - description: 'Default: 25'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/usersloginlogs.Log'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得會員登入紀錄
+      tags:
+      - User-MemberCenter
+  /user/logout:
+    post:
+      description: 會員登出
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 會員登出
+      tags:
+      - User-Auth
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: 會員註冊
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 會員註冊
+      tags:
+      - User-Index
+  /user/resend-verify:
+    post:
+      consumes:
+      - application/json
+      description: 重發 Email 驗證碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.ResendEmailVerificationCodeRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 重發 Email 驗證碼
+      tags:
+      - User-Auth
+  /user/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: 重設密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.ResetPasswordRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 重設密碼
+      tags:
+      - User-Auth
+  /user/settings/issue-withdraw-2fa-verify:
+    post:
+      consumes:
+      - application/json
+      description: 發送驗證信 - 更新兩階段認證
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 發送驗證信 - 更新兩階段認證
+      tags:
+      - User-MemberCenter
+  /user/settings/mobile-barcode:
+    patch:
+      consumes:
+      - application/json
+      description: 修改手機載具
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/settings.UpdateMobileBarcodeRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 修改手機載具
+      tags:
+      - User-MemberCenter
+  /user/settings/password:
+    patch:
+      consumes:
+      - application/json
+      description: 修改密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/settings.UpdatePasswordRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 修改密碼
+      tags:
+      - User-MemberCenter
+  /user/settings/withdraw-2fa:
+    patch:
+      consumes:
+      - application/json
+      description: 更新兩階段認證
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/settings.UpdateWithdraw2FAInfoRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 更新兩階段認證
+      tags:
+      - User-MemberCenter
+  /user/settings/withdraw-2fa-info:
+    get:
+      consumes:
+      - application/json
+      description: 取得兩階段認證資訊
+      parameters:
+      - description: 驗證碼
+        in: query
+        name: verificationCode
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/settings.GetWithdraw2FAInfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得兩階段認證資訊
+      tags:
+      - User-MemberCenter
+  /user/spot-trend:
+    get:
+      description: 取得現貨趨勢
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/spottrend.SpotTrend'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 取得現貨趨勢
+      tags:
+      - User-Index
+  /user/token:
+    post:
+      consumes:
+      - application/json
+      description: 刷新 Token
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.RefreshTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 刷新 Token
+      tags:
+      - User-Auth
+  /user/verify:
+    post:
+      consumes:
+      - application/json
+      description: Email 驗證
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.VerifyEmailRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: Email 驗證
+      tags:
+      - User-Auth
+  /user/verify-reset-password:
+    post:
+      consumes:
+      - application/json
+      description: 驗證重設密碼
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.VerifyResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.VerifyResetPasswordResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      summary: 驗證重設密碼
+      tags:
+      - User-Auth
+  /user/wallets/2fa-withdraw:
+    post:
+      consumes:
+      - application/json
+      description: 用戶 2FA 提幣
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/wallets.Withdraw2FARequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 用戶 2FA 提幣
+      tags:
+      - User-Wallets
+  /user/wallets/deposit/address:
+    get:
+      description: 取得存款地址
+      parameters:
+      - description: |-
+          Currency Type
+          * 1: BTC
+          * 2: ETH
+          * 3: USDC
+          * 4: USDT
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        in: query
+        maximum: 4
+        minimum: 1
+        name: currencyType
+        required: true
+        type: integer
+        x-enum-varnames:
+        - CurrencyTypeBTC
+        - CurrencyTypeETH
+        - CurrencyTypeUSDC
+        - CurrencyTypeUSDT
+        - CurrencyTypeTRX
+      - description: |-
+          Mainnet
+          * 1: BTC
+          * 2: ETC
+          * 3: ERC20
+          * 4: TRC20
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        maximum: 4
+        minimum: 1
+        name: mainnet
+        required: true
+        type: integer
+        x-enum-varnames:
+        - MainnetBTC
+        - MainnetETH
+        - MainnetERC20
+        - MainnetTRC20
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/wallets.GetDepositAddressResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得存款地址
+      tags:
+      - User-Wallets
+    post:
+      description: 產生存款地址
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/wallets.GetDepositAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/wallets.GetDepositAddressResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 產生存款地址
+      tags:
+      - User-Wallets
+  /user/wallets/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: 用戶提幣
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/wallets.WithdrawRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 2FA email sent
+          schema:
+            $ref: '#/definitions/wallets.WithdrawResponse'
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 用戶提幣
+      tags:
+      - User-Wallets
+  /user/wallets/withdraw-info:
+    get:
+      consumes:
+      - application/json
+      description: 取得提幣資訊
+      parameters:
+      - description: |-
+          Currency Type
+          * 1: BTC
+          * 2: ETH
+          * 3: USDC
+          * 4: USDT
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        in: query
+        maximum: 4
+        minimum: 1
+        name: currencyType
+        required: true
+        type: integer
+        x-enum-varnames:
+        - CurrencyTypeBTC
+        - CurrencyTypeETH
+        - CurrencyTypeUSDC
+        - CurrencyTypeUSDT
+        - CurrencyTypeTRX
+      - description: |-
+          Mainnet
+          * 1: BTC
+          * 2: ETC
+          * 3: ERC20
+          * 4: TRC20
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        maximum: 4
+        minimum: 1
+        name: mainnet
+        required: true
+        type: integer
+        x-enum-varnames:
+        - MainnetBTC
+        - MainnetETH
+        - MainnetERC20
+        - MainnetTRC20
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/wallets.GetCoinInfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得提幣資訊
+      tags:
+      - User-Wallets
+  /user/wallets/withdrawal-whitelist:
+    get:
+      description: 取得提幣白名單
+      parameters:
+      - description: |-
+          主網
+          * 1: BTC
+          * 2: ETH
+          * 3: ERC20
+          * 4: TRC20
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        maximum: 4
+        minimum: 1
+        name: mainnet
+        required: true
+        type: integer
+        x-enum-varnames:
+        - MainnetBTC
+        - MainnetETH
+        - MainnetERC20
+        - MainnetTRC20
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/modelpkg.GetResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/userswithdrawalwhitelist.Record'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 取得提幣白名單
+      tags:
+      - User-Wallets
+    post:
+      consumes:
+      - application/json
+      description: 提幣白名單 - 新增
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/wallets.CreateWithdrawalWhitelistRequest'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 提幣白名單 - 新增
+      tags:
+      - User-Wallets
+  /user/wallets/withdrawal-whitelist/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 提幣白名單 - 刪除
+      parameters:
+      - description: ID in withdrawal whitelist
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errpkg.JsonError'
+      security:
+      - BearerAuth: []
+      summary: 提幣白名單 - 刪除
+      tags:
+      - User-Wallets
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    description: Enter the token with the `Bearer ` prefix, e.g. "Bearer abcde12345".
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
