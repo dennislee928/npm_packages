@@ -1,0 +1,124 @@
+import { unref, version, getCurrentInstance, inject, nextTick, ref, watchEffect, watch, onBeforeUnmount, onDeactivated, onActivated } from 'vue';
+import { getActiveHead, createServerHead as createServerHead$1, createHead as createHead$1 } from 'unhead';
+import { defineHeadPlugin } from '@unhead/shared';
+
+function resolveUnref(r) {
+  return typeof r === "function" ? r() : unref(r);
+}
+function resolveUnrefHeadInput(ref, lastKey = "") {
+  if (ref instanceof Promise)
+    return ref;
+  const root = resolveUnref(ref);
+  if (!ref || !root)
+    return root;
+  if (Array.isArray(root))
+    return root.map((r) => resolveUnrefHeadInput(r, lastKey));
+  if (typeof root === "object") {
+    return Object.fromEntries(
+      Object.entries(root).map(([k, v]) => {
+        if (k === "titleTemplate" || k.startsWith("on"))
+          return [k, unref(v)];
+        return [k, resolveUnrefHeadInput(v, k)];
+      })
+    );
+  }
+  return root;
+}
+
+const Vue3 = version.startsWith("3");
+const IsBrowser = typeof window !== "undefined";
+
+const headSymbol = "usehead";
+function injectHead() {
+  return getCurrentInstance() && inject(headSymbol) || getActiveHead();
+}
+function vueInstall(head) {
+  const plugin = {
+    install(app) {
+      if (Vue3) {
+        app.config.globalProperties.$unhead = head;
+        app.config.globalProperties.$head = head;
+        app.provide(headSymbol, head);
+      }
+    }
+  };
+  return plugin.install;
+}
+function createServerHead(options = {}) {
+  const head = createServerHead$1({
+    ...options,
+    plugins: [
+      VueReactiveUseHeadPlugin(),
+      ...options?.plugins || []
+    ]
+  });
+  head.install = vueInstall(head);
+  return head;
+}
+function createHead(options = {}) {
+  const head = createHead$1({
+    ...options,
+    // arbitrary delay the dom update for batch updates
+    domDelayFn: (fn) => setTimeout(() => nextTick(() => fn()), 10),
+    plugins: [
+      VueReactiveUseHeadPlugin(),
+      ...options?.plugins || []
+    ]
+  });
+  head.install = vueInstall(head);
+  return head;
+}
+
+function VueReactiveUseHeadPlugin() {
+  return defineHeadPlugin({
+    hooks: {
+      "entries:resolve": function(ctx) {
+        for (const entry of ctx.entries)
+          entry.resolvedInput = resolveUnrefHeadInput(entry.input);
+      }
+    }
+  });
+}
+
+function clientUseHead(input, options = {}) {
+  const head = injectHead();
+  const deactivated = ref(false);
+  const resolvedInput = ref({});
+  watchEffect(() => {
+    resolvedInput.value = deactivated.value ? {} : resolveUnrefHeadInput(input);
+  });
+  const entry = head.push(resolvedInput.value, options);
+  watch(resolvedInput, (e) => {
+    entry.patch(e);
+  });
+  const vm = getCurrentInstance();
+  if (vm) {
+    onBeforeUnmount(() => {
+      entry.dispose();
+    });
+    onDeactivated(() => {
+      deactivated.value = true;
+    });
+    onActivated(() => {
+      deactivated.value = false;
+    });
+  }
+  return entry;
+}
+
+function serverUseHead(input, options = {}) {
+  const head = injectHead();
+  return head.push(input, options);
+}
+
+function useHead(input, options = {}) {
+  const head = injectHead();
+  if (head) {
+    const isBrowser = IsBrowser || !!head.resolvedOptions?.document;
+    if (options.mode === "server" && isBrowser || options.mode === "client" && !isBrowser)
+      return;
+    return isBrowser ? clientUseHead(input, options) : serverUseHead(input, options);
+  }
+}
+
+export { VueReactiveUseHeadPlugin as V, createHead as a, createServerHead as c, headSymbol as h, injectHead as i, resolveUnrefHeadInput as r, serverUseHead as s, useHead as u };

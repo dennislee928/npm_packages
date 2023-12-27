@@ -1,0 +1,85 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "paths": {
+      "#imports": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/.nuxt/types/nitro-imports"
+      ],
+      "#paths": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/nuxt/dist/core/runtime/nitro/paths"
+      ],
+      "~": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage"
+      ],
+      "~/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/*"
+      ],
+      "@": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage"
+      ],
+      "@/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/*"
+      ],
+      "~~": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage"
+      ],
+      "~~/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/*"
+      ],
+      "@@": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage"
+      ],
+      "@@/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/*"
+      ],
+      "assets": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/assets"
+      ],
+      "assets/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/assets/*"
+      ],
+      "public": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/public"
+      ],
+      "public/*": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/public/*"
+      ],
+      "pinia": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/pinia/dist/pinia"
+      ],
+      "vue-i18n": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/vue-i18n/dist/vue-i18n"
+      ],
+      "@intlify/shared": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/@intlify/shared/dist/shared"
+      ],
+      "@intlify/vue-router-bridge": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/@nuxtjs/i18n/node_modules/@intlify/vue-router-bridge/lib/index"
+      ],
+      "@intlify/vue-i18n-bridge": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/@nuxtjs/i18n/node_modules/vue-i18n-routing/node_modules/@intlify/vue-i18n-bridge/lib/index"
+      ],
+      "vue-i18n-routing": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/@nuxtjs/i18n/node_modules/vue-i18n-routing/dist/vue-i18n-routing"
+      ],
+      "#i18n": [
+        "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/node_modules/@nuxtjs/i18n/dist/runtime/composables"
+      ]
+    }
+  },
+  "include": [
+    "/Users/lipeichen/Desktop/彼雅特github/bityacht-exchange-frontstage/.nuxt/types/nitro-nuxt.d.ts",
+    "./types/nitro.d.ts",
+    "../**/*",
+    "../server/**/*"
+  ]
+}
