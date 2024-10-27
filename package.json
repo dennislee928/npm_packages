@@ -1,0 +1,14 @@
+{
+  "name": "stepbro-help-me-i-am-stucked",
+  "version": "2.1.0",
+  "description": "i am stucked in the washing machine, can you help meout,please :)? and will return sexy video in random.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stepbrother"
+  ],
+  "author": "pei chen lee",
+  "license": "ISC"
+}
