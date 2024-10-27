@@ -1,0 +1,19 @@
+<h1>Step Brother Content</h1>
+<p>{{this.model.helpMessage}}</p>
+<!-- 顯示從模型獲取的幫助訊息 -->
+
+{{#if this.model.randomVideo}}
+  <h2>Random Video</h2>
+  <p>Title: {{this.model.randomVideo.title}}</p>
+  <!-- 假設影片數據中有 title 屬性 -->
+  <video controls>
+    <source src="{{this.model.randomVideo.url}}" type="video/mp4" />
+    <!-- 假設影片數據中有 url 屬性 -->
+    Your browser does not support the video tag.
+  </video>
+{{else}}
+  <p>No video available.</p>
+{{/if}}
+
+<!-- 添加refresh按鈕 -->
+<button {{on "click" this.refreshPage}}>Refresh Page</button>
